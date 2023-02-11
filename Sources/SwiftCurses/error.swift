@@ -3,6 +3,9 @@ internal let ERR = -1
 
 public enum ErrorKind {
 	case halfdelayParameterOutsideOfRange
+	/// Window pointer is NULL
+	case CannotCreateWindow 
+	case MoveOutsideOfWindow
 	/// Generic error
 	case Error
 }
