@@ -1,6 +1,6 @@
 import ncurses
 
-extension Window {
+extension WindowProtocol {
     //========
     // printw 
     //========

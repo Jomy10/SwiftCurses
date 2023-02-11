@@ -61,7 +61,7 @@ extension [Attribute] {
 	}
 }
 
-extension Window {
+extension WindowProtocol {
 	@inlinable
 	public func attrOn(_ attrs: Attribute...) {
 		self.attrOn(attrs)

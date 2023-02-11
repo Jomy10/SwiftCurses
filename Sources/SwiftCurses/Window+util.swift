@@ -9,7 +9,7 @@ extension ncurses.swift_YX {
 
 public typealias Coordinate = ncurses.swift_YX
 
-extension Window {
+extension WindowProtocol {
 	/// Beginning coordinates
 	public var begYX: Coordinate {
 		return ncurses.swift_getbegyx(self.window)

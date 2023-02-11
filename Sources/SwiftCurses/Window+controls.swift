@@ -1,6 +1,6 @@
 import ncurses
 
-extension Window {
+extension WindowProtocol {
 	/// move the cursor to `row`th row and `col`th column
 	@inlinable
 	public func move(row: Int32, col: Int32) throws {

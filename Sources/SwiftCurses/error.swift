@@ -10,6 +10,8 @@ public enum ErrorKind {
 	case timeoutWithoutData
 	case SIGWINCH
 	case interrupted
+	case negativeCoordinate
+	case negativeNumber
 	/// Generic error
 	case error
 

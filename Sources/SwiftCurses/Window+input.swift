@@ -1,7 +1,7 @@
 import ncurses
 import Foundation
 
-extension Window {
+extension WindowProtocol {
     //=======
     // getch
     //=======
