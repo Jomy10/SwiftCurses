@@ -38,9 +38,26 @@ static inline struct swift_YX swift_getparyx(WINDOW* win) {
   return yx;
 }
 
-// static inline int swift_printw(const char* fmt, va_list args) {
-//   int ret;
-//   ret = vw_printw(stdscr, fmt, args);
-//   va_end(args);
-//   return (ret);
-// }
+//============
+// Attributes
+//============
+
+const int swift_A_NORMAL = A_NORMAL;
+const int swift_A_STANDOUT = A_STANDOUT;
+const int swift_A_UNDERLINE = A_UNDERLINE;
+const int swift_A_REVERSE = A_REVERSE;
+const int swift_A_BLINK = A_BLINK;
+const int swift_A_DIM = A_DIM;
+const int swift_A_BOLD = A_BOLD;
+const int swift_A_PROTECT = A_PROTECT;
+const int swift_A_INVIS = A_INVIS;
+const int swift_A_ALTCHARSET = A_ALTCHARSET;
+const int swift_A_CHARTEXT = A_CHARTEXT;
+static inline int swift_COLOR_PAIR(int n) {
+  return COLOR_PAIR(n);
+}
+#ifdef A_ITALIC
+const int swift_A_ITALIC = A_ITALIC;
+#else
+const int swift_A_ITALIC = NCURSES_BITS(1U,23);
+#endif

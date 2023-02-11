@@ -1,6 +1,6 @@
 import ncurses
 
-extension NCursesScreen {
+extension Window {
     //========
     // printw 
     //========
@@ -21,8 +21,8 @@ extension NCursesScreen {
     
     @inlinable
     public func addStr(_ str: String) throws {
-        if ncurses.waddstr(self.screen, str) == ERR {
-            throw CursesError(.Error)
+        if ncurses.waddstr(self.window, str) == ERR {
+            throw CursesError(.error, help: "https://invisible-island.net/ncurses/man/curs_addstr.3x.html#h2-RETURN-VALUE")
         }
     }
 
@@ -39,10 +39,10 @@ extension NCursesScreen {
     public func addChar(_ ch: Character) throws {
         let u32 = ch.unicodeScalars.map { wchar_t(bitPattern: $0.value) } + [0] // null-terminated UTF-8 character
         if ncurses.swift_waddwstr(
-            self.screen,
+            self.window,
             u32.withUnsafeBufferPointer { $0.baseAddress! }
         ) == ERR {
-            throw CursesError(.Error)
+            throw CursesError(.error, help: "https://invisible-island.net/ncurses/man/curs_addch.3x.html#h2-RETURN-VALUE")
         }
     }
 
@@ -52,6 +52,4 @@ extension NCursesScreen {
         try self.move(row: row, col: col)
         try self.addChar(ch)
     }
-
-    // TODO: attributes -> attrset { /*attribute applied in this context*/ } or regular attrset as well, which is called by the one with cb
 }

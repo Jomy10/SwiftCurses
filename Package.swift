@@ -23,7 +23,13 @@ let package = Package(
             dependencies: ["ncurses"]),
         .executableTarget(
             name: "Examples",
-            dependencies: ["SwiftCurses"]),
+            dependencies: ["SwiftCurses"],
+            swiftSettings: [.unsafeFlags([
+                "-Xfrontend",
+                "-warn-long-function-bodies=100",
+                "-Xfrontend",
+                "-warn-long-expression-type-checking=100"
+            ])]),
         .testTarget(
             name: "ncursesTests",
             dependencies: ["SwiftCurses"]),

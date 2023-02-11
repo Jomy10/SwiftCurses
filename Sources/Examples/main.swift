@@ -2,26 +2,30 @@ import SwiftCurses
 
 var char: Character?
 do {
-	try initScreen() { (scr: inout NCursesScreen) in
+	try initScreen() { scr in
 		try scr.print("hello\n")
-		// char = try scr.getChar()
-		// try scr.move(row: 10, col: 10)
-		// try scr.print("value:", char!, "hello")
-		// try scr.addStr("test")
-		// try scr.addChar("é")
 
-		let (my, mx) = scr.maxYX
+		let (my, mx) = scr.maxYX.tuple
 		try scr.print("max:   X = \(mx), Y = \(my)\n")
-		let (y, x) = scr.yx
+		let (y, x) = scr.yx.tuple
 		try scr.print("cur:   X = \(x), Y = \(y)\n")
-		let (by, bx) = scr.begYX
+		let (by, bx) = scr.begYX.tuple
 		try scr.print("start: X = \(bx), Y = \(by)\n")
 
+		scr.refresh()
+
+		let c = try scr.getCharCode()
+		if c == KeyCode.up {
+			try scr.print("Up pressed!")
+		}
+
+		let s: String = try scr.getStr()
+		try scr.print(s)
+
 		char = try scr.getChar()
-		return false
 	}
 } catch {
 	print("oops, that's an error: \(error)")
 }
 
-print(char!)
+print(char ?? "No character read")
