@@ -36,8 +36,8 @@ open class ManagedWindow: WindowProtocol {
 
 /// Create a new ncurses window
 @inlinable
-internal func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32)) throws -> OpaquePointer {
-    guard let win = newwin(lines, cols, begin.0, begin.1) else {
+internal func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> OpaquePointer {
+    guard let win = ncurses.newwin(lines, cols, begin.0, begin.1) else {
         if begin.0 < 0 || begin.1 < 1 {
             throw CursesError(.negativeCoordinate, help: "The beginning coordinates of the window cannot be negative")
         } else if lines < 0 {
@@ -49,18 +49,20 @@ internal func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32)) throws
         }
     }
 
+    settings.forEach { $0.apply(win) }
+
     return win
 }
 
 /// Create a new window
 @inlinable
-public func newWindow(lines: Int32, cols: Int32, begin: Coordinate, _ body: (inout Window) -> ()) throws {
-    try newWindow(lines: lines, cols: cols, begin: begin.tuple, body)
+public func newWindow(lines: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
+    try newWindow(lines: lines, cols: cols, begin: begin.tuple, body, settings: settings)
 }
 
 /// Create a new window
-public func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), _ body: (inout Window) -> ()) throws {
-    let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin)
+public func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
+    let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
     var window = Window(win)
     body(&window)
     delwin(win)
@@ -69,13 +71,13 @@ public func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), _ body: 
 // Generic function allows the user to define their own window types (e.g. window with borders)
 /// Returns a managed class object that can be passed around.
 @inlinable
-public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: Coordinate) throws -> ManagedWindowType {
-    return try newWindow(lines: lines, cols: cols, begin: begin.tuple)
+public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
+    return try newWindow(lines: lines, cols: cols, begin: begin.tuple, settings: settings)
 }
 
 /// Returns a managed class object that can be passed around.
-public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: (Int32, Int32)) throws -> ManagedWindowType {
-    let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin)
+public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
+    let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
     let window = ManagedWindowType(win)
     return window
 }

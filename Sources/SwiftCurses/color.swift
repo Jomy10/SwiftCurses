@@ -30,6 +30,10 @@ public struct Color {
 
 	public static let maxColors = COLORS
 
+	public static func forceXTerm256Color() {
+		setenv("TERM","xterm-256color", 1)
+	}
+
 	public static func define(_ id: ColorId, r: ColorRGB, g: ColorRGB, b: ColorRGB) throws {
 		if ncurses.init_color(id, r, g, b) == ERR {
 			if !(0...1000).contains(r) {

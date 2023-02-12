@@ -6,6 +6,8 @@ struct Err: Error {
 	init(_ str: String) { self.str = str }
 }
 
+// ncurses only checks for "xterm-256color", not e.g. "screen-256color"
+Color.forceXTerm256Color()
 do {
 	try initScreen(colors)
 } catch {
@@ -17,7 +19,7 @@ func colors(scr: inout Window) throws {
 		throw Err("Terminal does not support color")
 	}
 
-	try Color.define(10, r: 0, g: 700, b: 0) // redefine color
+	try Color.define(Color.red, r: 0, g: 700, b: 0) // redefine color
 	try ColorPair.define(1, fg: Color.red, bg: Color.black)
 
 	// same as surrounding with attrOn and attrOff
@@ -66,6 +68,14 @@ func windows(scr: inout Window) throws {
 		
 		ch = try scr.getCharCode()
 	}
+}
+
+func keys(scr: inout Window) throws {
+	let H: Int32 = 10
+	let W: Int32 = 30
+
+	let menuWin = try newWindow(lines: H, cols: W, begin: ((80 - W) / 2, (24 - H) / 2))
+	menuWin.sett
 }
 
 class BorderedWindow: ManagedWindow {
