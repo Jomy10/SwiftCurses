@@ -12,7 +12,7 @@ public enum Attribute {
 	case invisible
 	case altCharset
 	case chartext
-	case color_pair(_ n: Int32)
+	case colorPair(_ n: Int32)
 	case italic
 }
 
@@ -42,7 +42,7 @@ extension Attribute {
 			return ncurses.swift_A_ALTCHARSET
 		case .chartext:
 			return ncurses.swift_A_CHARTEXT
-		case .color_pair(let n):
+		case .colorPair(let n):
 			return swift_COLOR_PAIR(n)
 		case .italic:
 			return ncurses.swift_A_ITALIC
@@ -87,10 +87,10 @@ extension WindowProtocol {
 		ncurses.wattroff(self.window, attrs.combine())
 	}
 
-	public func withAttrs(_ attrs: Attribute..., body: () -> ()) {
+	public func withAttrs(_ attrs: Attribute..., body: () throws -> ()) rethrows {
 		self.attrOn(attrs)
 
-		body()
+		try body()
 
 		// TODO: resotre previous intead of turning off
 		self.attrOff(attrs)

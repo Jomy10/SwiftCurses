@@ -8,12 +8,14 @@ public enum ScreenSetting {
     case echo
 	case keypad
     case halfdelay(Int32)
+    /// enable color support (equal to calling `start_color` in ncurses)
+    case colors
     // TODO: add other options: https://linux.die.net/man/3/raw
 }
 
 extension ScreenSetting {
     public static var defaultSettings: [ScreenSetting] {
-        [.raw, .noEcho, .keypad]
+        [.raw, .noEcho, .keypad, .colors]
     }
 
     // TODO: error handling of options
@@ -33,6 +35,10 @@ extension ScreenSetting {
             case .halfdelay(let delay):
                 if ncurses.halfdelay(delay) == ERR {
                     throw CursesError(.halfdelayParameterOutsideOfRange)
+                }
+            case .colors:
+                if ncurses.start_color() == ERR {
+                    throw CursesError(.colorTableCannotBeAllocated)
                 }
         }
     }

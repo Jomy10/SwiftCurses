@@ -94,4 +94,9 @@ public struct KeyCode {
 	public static let sundo = KEY_SUNDO	// Shifted undo key
 	public static let suspend = KEY_SUSPEND	// Suspend key
 	public static let undo = KEY_UNDO	// Undo key
+
+	/// Fn keys
+	public static func f(_ n: Int32) -> Int32 {
+		return swift_key_f(n)
+	}
 }

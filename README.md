@@ -1,3 +1,7 @@
-# ncurses
+# SwiftCurses
 
-A description of this package.
+ncurses for Swift.
+
+## TODO
+
+- [x] border: https://invisible-island.net/ncurses/man/curs_border.3x.html

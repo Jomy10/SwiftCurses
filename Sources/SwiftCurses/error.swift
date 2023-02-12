@@ -1,6 +1,3 @@
-// @usableFromInline
-// internal let ERR = -1
-
 public enum ErrorKind {
 	case halfdelayParameterOutsideOfRange
 	/// Window pointer is NULL
@@ -12,6 +9,13 @@ public enum ErrorKind {
 	case interrupted
 	case negativeCoordinate
 	case negativeNumber
+	case colorTableCannotBeAllocated
+	case colorPairOutsideOfRange
+	case colorOutsideOfRange
+	case rgbValueOutOfRange
+	case colorUnsupported
+	case colorChangeUnsupported
+	case uninitializedColorPair
 	/// Generic error
 	case error
 
@@ -21,7 +25,10 @@ public enum ErrorKind {
 			case .getCharError: return "Timeout expired without having any data, or the eecution was interrupted by a signal (errno will be set to EINTR)"
 			case .timeoutWithoutData: return "Timeout expired without having any data"
 			case .SIGWINCH: return "SIGWINCH interrupt"
-			case .interrupted: return "the execution was interrupted by a signal"
+			case .interrupted: return "The execution was interrupted by a signal"
+			case .colorUnsupported: return "Color.define: the terminal does not support this feature, e.g., the initialize_color capability is absent from the terminal description."
+			case .colorChangeUnsupported: return "The terminal does not support changing color"
+			case .uninitializedColorPair: return "The pair was not initialized using `init_pairs`"
 			default: return nil
 		}
 	}

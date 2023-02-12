@@ -1,31 +1,80 @@
 import SwiftCurses
 
-var char: Character?
-do {
-	try initScreen() { scr in
-		try scr.print("hello\n")
+struct Err: Error {
+	let str: String
 
-		let (my, mx) = scr.maxYX.tuple
-		try scr.print("max:   X = \(mx), Y = \(my)\n")
-		let (y, x) = scr.yx.tuple
-		try scr.print("cur:   X = \(x), Y = \(y)\n")
-		let (by, bx) = scr.begYX.tuple
-		try scr.print("start: X = \(bx), Y = \(by)\n")
-
-		scr.refresh()
-
-		let c = try scr.getCharCode()
-		if c == KeyCode.up {
-			try scr.print("Up pressed!")
-		}
-
-		let s: String = try scr.getStr()
-		try scr.print(s)
-
-		char = try scr.getChar()
-	}
-} catch {
-	print("oops, that's an error: \(error)")
+	init(_ str: String) { self.str = str }
 }
 
-print(char ?? "No character read")
+do {
+	try initScreen(colors)
+} catch {
+	print("oops, that's an error.\n\(error)")
+}
+
+func colors(scr: inout Window) throws {
+	if !Color.hasColors {
+		throw Err("Terminal does not support color")
+	}
+
+	try Color.define(10, r: 0, g: 700, b: 0) // redefine color
+	try ColorPair.define(1, fg: Color.red, bg: Color.black)
+
+	// same as surrounding with attrOn and attrOff
+	try scr.withAttrs(.colorPair(1)) {
+		try scr.print("Now also in color!")
+	}
+
+	try scr.getChar()
+}
+
+func windows(scr: inout Window) throws {
+	let (maxY, maxX) = scr.maxYX.tuple
+	let wH: Int32 = 3
+	let wW: Int32 = 10
+	var startY = (maxY +  wH) / 2
+	var startX = (maxX + wW) / 2
+	
+	try scr.print("Press F1 to exit")
+	scr.refresh()
+
+	var win: BorderedWindow = try newWindow(lines: wH, cols: wW, begin: (startY, startX))
+
+	var ch: Int32 = try scr.getCharCode()
+	while (ch != KeyCode.f(1)) {
+		switch (ch) {
+			case KeyCode.left:
+				startX -= 1
+				win = try newWindow(lines: wH, cols: wW, begin: (startY, startX))
+				win.refresh()
+			case KeyCode.right:
+				startX += 1
+				win = try newWindow(lines: wH, cols: wW, begin: (startY, startX))
+				win.refresh()
+			case KeyCode.up:
+				startY -= 1
+				win = try newWindow(lines: wH, cols: wW, begin: (startY, startX))
+				win.refresh()
+			case KeyCode.down:
+				startY += 1
+				win = try newWindow(lines: wH, cols: wW, begin: (startY, startX))
+				win.refresh()
+			default:
+				try scr.print("Key code not found")
+		}
+		scr.refresh()
+		
+		ch = try scr.getCharCode()
+	}
+}
+
+class BorderedWindow: ManagedWindow {
+	override func onInit() {
+		self.box(0, 0)
+	}
+
+	override func onDeinit() {
+		self.clearBorder()
+		self.refresh()
+	}
+}

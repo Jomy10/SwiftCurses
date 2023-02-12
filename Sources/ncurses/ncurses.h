@@ -61,3 +61,11 @@ const int swift_A_ITALIC = A_ITALIC;
 #else
 const int swift_A_ITALIC = NCURSES_BITS(1U,23);
 #endif
+
+//======
+// Keys
+//======
+
+static inline int swift_key_f(int n) {
+  return KEY_F(n);
+}
