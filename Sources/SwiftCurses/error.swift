@@ -19,6 +19,7 @@ public enum ErrorKind {
 	case cursorAboutToWrap
 	case mouseEventRegisterError
 	case queueFull
+	case couldNotOpenFile
 	/// Terminal does not support moue as indicated by `MouseEvent.hasMouse`
 	case noMouseSupport
 	/// Generic error

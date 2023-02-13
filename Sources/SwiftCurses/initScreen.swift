@@ -27,3 +27,26 @@ public func initScreen(
     var scr = Window(_scr)
     try body(&scr)
 }
+
+
+// https://invisible-island.net/ncurses/man/curs_scr_dump.3x.html //
+
+@inlinable
+public func scrDump(filename: String) {
+    ncurses.scr_dump(filename)
+}
+
+@inlinable
+public func scrRestore(filename: String) {
+    ncurses.scr_restore(filename)
+}
+
+@inlinable
+public func scrInit(filename: String) {
+    ncurses.scr_init(filename)
+} 
+
+@inlinable
+public func scrSet(filename: String) {
+    ncurses.scr_set(filename)
+}

@@ -97,3 +97,5 @@ const mmask_t swift_buttonCtrl = BUTTON_CTRL;                      // control wa
 const mmask_t swift_buttonAlt = BUTTON_ALT;                        // alt was down during button state change
 const mmask_t swift_allMouseEvents = ALL_MOUSE_EVENTS;             // report all button state changes
 const mmask_t swift_reportMousePosition = REPORT_MOUSE_POSITION;   // report mouse movement
+
+// TODO: ACS (https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/misc.html)

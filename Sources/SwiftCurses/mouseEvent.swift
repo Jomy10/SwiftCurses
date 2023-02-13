@@ -144,13 +144,13 @@ extension MouseEvent {
 		}
 	}
 
-	@inlinable
-	public var hasMouse: Bool {
-		ncurses.has_mouse()
-	}
+	// @inlinable
+	// public static var hasMouse: Bool {
+	// 	ncurses.swift_has_mouse()
+	// }
 
 	@inlinable
-	public func interval(_ n: Int32) {
+	public static func interval(_ n: Int32) {
 		ncurses.mouseinterval(n)
 	}
 
@@ -172,9 +172,9 @@ extension MouseEvent {
 		// if no mouse-event in queue -> return nil instead
 		var event = MouseEvent()
 		if getmouse(&event) != OK {
-			if !self.hasMouse {
-				throw CursesErro(.noMouseSupport)
-			}
+			// if !Self.hasMouse {
+			// 	throw CursesError(.noMouseSupport)
+			// }
 			return nil
 		}
 		return event

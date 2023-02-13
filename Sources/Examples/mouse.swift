@@ -54,7 +54,7 @@ func mouse() throws {
 			c = try menuWin.getCharCode()
 			switch c {
 				case KeyCode.mouse:
-					if let event = MouseEvent.get() {
+					if let event = try MouseEvent.get() {
 						// when the user clicks the left mouse button
 						if event.isPressed(.button1) {
 							reportChoice(event.x + 1, event.y + 1, &choice)
@@ -78,7 +78,7 @@ fileprivate func printMenu<W: WindowProtocol>(_ win: W, _ highlight: Int) throws
 	var y: Int32 = 2
 	win.box(0, 0)
 	for i in 0..<nChoices {
-		try win.refresh()
+		win.refresh()
 		if highlight == i + 1 {
 			try win.withAttrs(.reverse) {
 				try win.print(row: y, col: x, choices[i])

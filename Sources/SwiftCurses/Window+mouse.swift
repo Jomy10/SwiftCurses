@@ -6,6 +6,7 @@ public enum TrafoKind {
 	case toStdScrn
 	case toWindow
 
+	@usableFromInline
 	var rawValue: Bool {
 		switch self {
 			case .toStdScrn: return false
@@ -42,5 +43,10 @@ extension WindowProtocol {
 		var (lx, ly) = (x, y)
 		let b = ncurses.wmouse_trafo(self.window, &ly, &lx, kind.rawValue)
 		return (b, ly, lx)
-	} 
+	}
+
+	/// `wenclose`
+	public func encloses(y: Int32, x: Int32) -> Bool {
+		ncurses.wenclose(self.window, y, x)
+	}
 }
