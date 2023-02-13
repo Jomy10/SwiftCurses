@@ -12,6 +12,10 @@ func main() throws {
 	let program = CommandLine.arguments[1]
 
 	switch program {
+		case "helloWorld":
+			try helloWorld()
+		case "init":
+			try initUsage()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":
