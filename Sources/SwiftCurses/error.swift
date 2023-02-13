@@ -16,6 +16,8 @@ public enum ErrorKind {
 	case colorUnsupported
 	case colorChangeUnsupported
 	case uninitializedColorPair
+	case cursorAboutToWrap
+	case mouseEventRegisterError
 	/// Generic error
 	case error
 

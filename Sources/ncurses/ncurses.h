@@ -66,6 +66,34 @@ const int swift_A_ITALIC = NCURSES_BITS(1U,23);
 // Keys
 //======
 
+// fn keys
 static inline int swift_key_f(int n) {
   return KEY_F(n);
 }
+
+// Mouse events (macros not being picked uup by swift)
+const mmask_t swift_button1Pressed = BUTTON1_PRESSED;              // mouse button 1 down
+const mmask_t swift_button1Released = BUTTON1_RELEASED;            // mouse button 1 up
+const mmask_t swift_button1Clicked = BUTTON1_CLICKED;              // mouse button 1 clicked
+const mmask_t swift_button1DoubleClicked = BUTTON1_DOUBLE_CLICKED; // mouse button 1 double clicked
+const mmask_t swift_button1TripleClicked = BUTTON1_TRIPLE_CLICKED; // mouse button 1 triple clicked
+const mmask_t swift_button2Pressed = BUTTON2_PRESSED;              // mouse button 2 down
+const mmask_t swift_button2Released = BUTTON2_RELEASED;            // mouse button 2 up
+const mmask_t swift_button2Clicked = BUTTON2_CLICKED;              // mouse button 2 clicked
+const mmask_t swift_button2DoubleClicked = BUTTON2_DOUBLE_CLICKED; // mouse button 2 double clicked
+const mmask_t swift_button2TripleClicked = BUTTON2_TRIPLE_CLICKED; // mouse button 2 triple clicked
+const mmask_t swift_button3Pressed = BUTTON3_PRESSED;              // mouse button 3 down
+const mmask_t swift_button3Released = BUTTON3_RELEASED;            // mouse button 3 up
+const mmask_t swift_button3Clicked = BUTTON3_CLICKED;              // mouse button 3 clicked
+const mmask_t swift_button3DoubleClicked = BUTTON3_DOUBLE_CLICKED; // mouse button 3 double clicked
+const mmask_t swift_button3TripleClicked = BUTTON3_TRIPLE_CLICKED; // mouse button 3 triple clicked
+const mmask_t swift_button4Pressed = BUTTON4_PRESSED;              // mouse button 4 down
+const mmask_t swift_button4Released = BUTTON4_RELEASED;            // mouse button 4 up
+const mmask_t swift_button4Clicked = BUTTON4_CLICKED;              // mouse button 4 clicked
+const mmask_t swift_button4DoubleClicked = BUTTON4_DOUBLE_CLICKED; // mouse button 4 double clicked
+const mmask_t swift_button4TripleClicked = BUTTON4_TRIPLE_CLICKED; // mouse button 4 triple clicked
+const mmask_t swift_buttonShift = BUTTON_SHIFT;                    // shift was down during button state change
+const mmask_t swift_buttonCtrl = BUTTON_CTRL;                      // control was down during button state change
+const mmask_t swift_buttonAlt = BUTTON_ALT;                        // alt was down during button state change
+const mmask_t swift_allMouseEvents = ALL_MOUSE_EVENTS;             // report all button state changes
+const mmask_t swift_reportMousePosition = REPORT_MOUSE_POSITION;   // report mouse movement

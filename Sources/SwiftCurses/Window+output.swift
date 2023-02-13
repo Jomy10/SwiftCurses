@@ -5,14 +5,19 @@ extension WindowProtocol {
     // printw 
     //========
 
-    public func print(_ items: Any..., separator: String = " ") throws {
+    @inlinable
+    internal func printArgs(_ items: [Any], _ separator: String) throws {
         try self.addStr(items.map { String(describing: $0) }.joined(separator: separator))
+    }
+
+    public func print(_ items: Any..., separator: String = " ") throws {
+        try self.printArgs(items, separator)
     }
 
     @inlinable
     public func print(row: Int32, col: Int32, _ items: Any..., separator: String = " ") throws {
         try self.move(row: row, col: col)
-        try self.print(items, separator)
+        try self.printArgs(items, separator)
     }
 
     //========

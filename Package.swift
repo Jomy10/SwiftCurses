@@ -9,6 +9,9 @@ let package = Package(
         .library(
             name: "SwiftCurses",
             targets: ["SwiftCurses"]),
+        .executable(
+            name: "SwiftCursesExamples",
+            targets: ["Examples"])
     ],
     dependencies: [],
     targets: [

@@ -57,7 +57,7 @@ internal func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settin
 /// Create a new window
 @inlinable
 public func newWindow(lines: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
-    try newWindow(lines: lines, cols: cols, begin: begin.tuple, body, settings: settings)
+    try newWindow(lines: lines, cols: cols, begin: begin.tuple, settings: settings, body)
 }
 
 /// Create a new window
