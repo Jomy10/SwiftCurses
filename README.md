@@ -1,7 +1,9 @@
 <div align="center">
   <h1>SwiftCurses</h1>
-  ❰[examples](/Sources/Examples) | [ncurses tutorial](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/)❱
-</div>
+  ❰
+  <a href="/Sources/Examples">examples</a>
+  ❱
+</div><br/>
 
 SwiftCurses is a Swifty wrapper for ncurses.
 
