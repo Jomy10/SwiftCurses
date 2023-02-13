@@ -18,6 +18,9 @@ public enum ErrorKind {
 	case uninitializedColorPair
 	case cursorAboutToWrap
 	case mouseEventRegisterError
+	case queueFull
+	/// Terminal does not support moue as indicated by `MouseEvent.hasMouse`
+	case noMouseSupport
 	/// Generic error
 	case error
 

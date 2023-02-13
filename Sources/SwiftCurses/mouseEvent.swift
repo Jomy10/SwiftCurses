@@ -138,10 +138,20 @@ extension ModifierKey {
 
 extension MouseEvent {
 	/// Register the given mouse events
-	public func register(_ events: MouseEventMask...) throws {
+	public static func register(_ events: MouseEventMask...) throws {
 		if ncurses.mousemask(events.reduce(0) { $0 | $1.val }, nil) == 0 && events.count != 0 {
 			throw CursesError(.mouseEventRegisterError) // TODO: help
 		}
+	}
+
+	@inlinable
+	public var hasMouse: Bool {
+		ncurses.has_mouse()
+	}
+
+	@inlinable
+	public func interval(_ n: Int32) {
+		ncurses.mouseinterval(n)
 	}
 
 	/// Once a class of mouse events has been made visible in a window, calling the
@@ -162,9 +172,18 @@ extension MouseEvent {
 		// if no mouse-event in queue -> return nil instead
 		var event = MouseEvent()
 		if getmouse(&event) != OK {
+			if !self.hasMouse {
+				throw CursesErro(.noMouseSupport)
+			}
 			return nil
 		}
 		return event
+	}
+
+	public mutating func unget() throws {
+		if ncurses.ungetmouse(&self) == ERR {
+			throw CursesError(.queueFull)
+		}
 	}
 
 	/// button is down
@@ -204,4 +223,6 @@ extension MouseEvent {
 	public var device: Int16 {
 		self.id
 	}
+
+	
 }

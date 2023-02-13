@@ -1,7 +1,10 @@
-import SwiftCurses
+//=======================
+// Swift Curses Examples
+//=======================
+
 
 func main() throws {
-	let program = CommandLine.arguments[0]
+	let program = CommandLine.arguments[1]
 
 	switch program {
 		case "mouse":
