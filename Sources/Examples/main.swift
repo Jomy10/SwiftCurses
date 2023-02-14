@@ -20,6 +20,8 @@ func main() throws {
 			try mouse()
 		case "tempLeaveCurses":
 			try temporarilyLeavingCurses()
+		case "print":
+			try printExample()
 		default:
 			print("Invalid program \(program)")
 	}

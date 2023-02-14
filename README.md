@@ -15,11 +15,11 @@ SwiftCurses is a Swifty wrapper for ncurses.
 import SwiftCurses
 
 func helloWorld() throws {
-	try initScreen() { scr in
-		try scr.print("Hello world !!!")
-		scr.refresh()
-		try scr.getChar()
-	}
+  try initScreen() { scr in
+    try scr.print("Hello world !!!")
+    scr.refresh()
+    try scr.getChar()
+  }
 }
 ```
 
@@ -54,7 +54,7 @@ though keep in mind some functions may be missing/have a different name.
 
 [ncurses info](https://invisible-island.net/ncurses/)
 
-## Quetions
+## Questions
 
 Feel free to ask any questions.
 
