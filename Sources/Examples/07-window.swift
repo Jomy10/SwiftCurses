@@ -27,9 +27,9 @@ func windowExample() throws {
 		// Create our custom window defined below
 		var myWin: BorderedWindow? = try BorderedWindow(lines: height, cols: width, begin: (starty, startx), settings: [])
 		_ = myWin // supress Swift warning
-		var ch: Int32 = try scr.getCharCode()
-		while ch != KeyCode.f(1) {
-			switch ch {
+		var ch = try scr.getChar()
+		while ch.code != KeyCode.f(1) {
+			switch ch.code {
 				case KeyCode.left:
 					startx -= 1
 					myWin = nil 	// destroy the old window
@@ -50,7 +50,7 @@ func windowExample() throws {
 					break
 			}
 
-			ch = try scr.getCharCode()
+			ch = try scr.getChar()
 		}
 	}
 }

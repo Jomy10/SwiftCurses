@@ -43,16 +43,16 @@ func mouse() throws {
 		}
 
 		// Print the menu for the first time
-		let menuWin: ManagedWindow = try newWindow(lines: HEIGHT, cols: WIDTH, begin: (starty, startx))
+		let menuWin = try ManagedWindow(lines: HEIGHT, cols: WIDTH, begin: (starty, startx))
 		try printMenu(menuWin, 1)
 
 		// Get all the mouse events
 		try MouseEvent.register(.allMouseEvents)
 
-		var c: Int32 = -1
+		var c: WideChar = -1
 		loop: while true {
-			c = try menuWin.getCharCode()
-			switch c {
+			c = try menuWin.getChar()
+			switch c.code {
 				case KeyCode.mouse:
 					if let event = MouseEvent.get() {
 						// when the user clicks the left mouse button

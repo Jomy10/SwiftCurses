@@ -34,6 +34,14 @@ extension WideChar {
         return Int32(bytes[0])
     }
 
+    public static func ==(lhs: WideChar, rhs: Character) -> Bool {
+        return lhs.char == rhs
+    }
+
+    public static func !=(lhs: WideChar, rhs: Character) -> Bool {
+        return lhs.char != rhs
+    }
+
     // will wchar_t ever be invalid causing the c function to fail?
     // public func code() throws -> Int32 {
         
@@ -45,20 +53,20 @@ extension WindowProtocol {
     // getch
     //=======
 
-    /// Get a UTF-8 character from the user
+    /// Get a UTF-8 character from the user.
+    ///
+    /// - Returns:
+    ///    - A `WideChar`, the KeyCode can be gotten using `WideChar.code` and
+    ///      the the Character itelf can be gotten with `WideChar.char`
     @discardableResult
-    public func getChar() throws -> Character {
-        // var c: wchar_t = wchar_t.init()
-        // return try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
-        //     if ncurses.swift_get_wch(ptr) == ERR {
-        //         throw CursesError(.getCharError)
-        //     }
-        //     // https://developer.apple.com/forums/thread/655947
-        //     let data = Data(bytes: ptr, count: MemoryLayout<wchar_t>.stride)
-        //     return String(data: data, encoding: string32Encoding)!.first.unsafelyUnwrapped // should always return a valid character (todo check)
-        // }
-        let widechar = try self.getWChar()
-        return widechar.char
+    public func getChar() throws -> WideChar {
+        var c: wchar_t = wchar_t.init()
+        try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
+            if ncurses.swift_get_wch(ptr) == ERR {
+                throw CursesError(.getCharError)
+            }
+        }
+        return c
     }
 
     /// Get the ASCII value of the character or keypress (when using keypad mode)
@@ -77,6 +85,7 @@ extension WindowProtocol {
 
     /// Get a `WideChar`. This can then be converted to either a `Character` using `.char` or a CharCode (of type `Int32`) uing `.code`
     @discardableResult
+    @available(*, deprecated, message: "Use getChar instead")
     public func getWChar() throws -> WideChar {
         var c: wchar_t = wchar_t.init()
         try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
@@ -139,7 +148,7 @@ extension WindowProtocol {
         var c = try self.getChar()
         var s = String()
         while (c != terminator) {
-            s.append(c)
+            s.append(c.char)
             c = try self.getChar()
         }
         return s

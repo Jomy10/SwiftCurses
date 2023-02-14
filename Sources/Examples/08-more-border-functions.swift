@@ -26,9 +26,9 @@ func borderExample() throws {
 		}
 
 		try win.createBox(scr, flag: true)
-		var ch = try scr.getCharCode()
-		while ch != KeyCode.f(1) {
-			switch ch {
+		var ch = try scr.getChar()
+		while ch.code != KeyCode.f(1) {
+			switch ch.code {
 				case KeyCode.left:
 					try win.createBox(scr, flag: false)
 					win.startx -= 1
@@ -49,7 +49,7 @@ func borderExample() throws {
 					break
 			}
 		
-			ch = try scr.getCharCode()
+			ch = try scr.getChar()
 		}
 	}
 }

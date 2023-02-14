@@ -14,14 +14,14 @@ func initUsage() throws {
 		windowSettings: [.keypad(true)]
 	) { scr in
 		try scr.print("Type any character to see it in bold\n")
-		let ch = try scr.getCharCode()
+		let ch = try scr.getChar()
 
-		if (ch == KeyCode.f(1)) {
+		if (ch.code == KeyCode.f(1)) {
 			try scr.print("F1 key pressed")
 		} else {
 			try scr.print("The pressed key is ")
 			try scr.withAttrs(.bold) {
-				try scr.print(Character(UnicodeScalar(Int(ch))!))
+				try scr.print(ch.char)
 			}
 		}
 
