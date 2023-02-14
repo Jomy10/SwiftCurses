@@ -16,12 +16,14 @@ func main() throws {
 			try helloWorld()
 		case "init":
 			try initUsage()
+		case "print":
+			try printExample()
+		case "input":
+			try inputExample()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":
 			try temporarilyLeavingCurses()
-		case "print":
-			try printExample()
 		default:
 			print("Invalid program \(program)")
 	}

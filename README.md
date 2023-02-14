@@ -54,6 +54,12 @@ though keep in mind some functions may be missing/have a different name.
 
 [ncurses info](https://invisible-island.net/ncurses/)
 
+### Running the examples
+
+```sh
+swift run SwiftCursesExamples [name of the example (see main.swift)]
+```
+
 ## Questions
 
 Feel free to ask any questions.
