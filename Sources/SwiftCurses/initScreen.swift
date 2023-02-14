@@ -1,8 +1,5 @@
 import ncurses
 
-// Detect system encoding -> used for wide characters
-let string32Encoding: String.Encoding = (1.littleEndian == 1) ? .utf32LittleEndian : .utf32BigEndian
-
 /// Start a new curses mode terminal
 ///
 /// - Parameters:
@@ -22,7 +19,7 @@ public func initScreen(
 
     try settings.forEach { try $0.apply() }
     windowSettings.forEach { $0.apply(_scr) }
-    ncurses.setlocale(LC_ALL, "")
+    ncurses.setlocale(LC_ALL, "") // support for wide chars
 
     var scr = Window(_scr)
     try body(&scr)

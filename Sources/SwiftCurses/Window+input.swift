@@ -1,5 +1,44 @@
 import ncurses
+#if canImport(Foundation)
 import Foundation
+#endif
+
+// Detect system encoding -> used for wide characters
+let string32Encoding: String.Encoding = (1.littleEndian == 1) ? .utf32LittleEndian : .utf32BigEndian
+
+public typealias WideChar = wchar_t
+
+extension WideChar {
+    /// Get the character value
+    public var char: Character {
+        #if canImport(Foundation)
+        withUnsafePointer(to: self) { ptr in
+            let data = Data(bytes: ptr, count: MemoryLayout<wchar_t>.stride)
+            return String(data: data, encoding: string32Encoding)!.first.unsafelyUnwrapped // should always return a valid character (todo check)
+        }
+        #else
+        guard let bytes = wcharToBytes(self) else {
+            return Character("\0")
+        }
+
+        return String(cString: bytes).first.unsafelyUnwrapped
+        #endif
+    }
+
+    /// Get the KeyCode value
+    public var code: Int32 {
+        guard let bytes = wcharToBytes(self) else {
+            return -1
+        }
+
+        return Int32(bytes[0])
+    }
+
+    // will wchar_t ever be invalid causing the c function to fail?
+    // public func code() throws -> Int32 {
+        
+    // }
+}
 
 extension WindowProtocol {
     //=======
@@ -9,15 +48,17 @@ extension WindowProtocol {
     /// Get a UTF-8 character from the user
     @discardableResult
     public func getChar() throws -> Character {
-        var c: wchar_t = wchar_t.init()
-        return try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
-            if ncurses.swift_get_wch(ptr) == ERR {
-                throw CursesError(.getCharError)
-            }
-            // https://developer.apple.com/forums/thread/655947
-            let data = Data(bytes: ptr, count: MemoryLayout<wchar_t>.stride)
-            return String(data: data, encoding: string32Encoding)!.first.unsafelyUnwrapped // should always return a valid character (todo check)
-        }
+        // var c: wchar_t = wchar_t.init()
+        // return try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
+        //     if ncurses.swift_get_wch(ptr) == ERR {
+        //         throw CursesError(.getCharError)
+        //     }
+        //     // https://developer.apple.com/forums/thread/655947
+        //     let data = Data(bytes: ptr, count: MemoryLayout<wchar_t>.stride)
+        //     return String(data: data, encoding: string32Encoding)!.first.unsafelyUnwrapped // should always return a valid character (todo check)
+        // }
+        let widechar = try self.getWChar()
+        return widechar.char
     }
 
     /// Get the ASCII value of the character or keypress (when using keypad mode)
@@ -29,6 +70,18 @@ extension WindowProtocol {
                 throw CursesError(.timeoutWithoutData)
             } else if c == EINTR {
                 throw CursesError(.interrupted)
+            }
+        }
+        return c
+    }
+
+    /// Get a `WideChar`. This can then be converted to either a `Character` using `.char` or a CharCode (of type `Int32`) uing `.code`
+    @discardableResult
+    public func getWChar() throws -> WideChar {
+        var c: wchar_t = wchar_t.init()
+        try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
+            if ncurses.swift_get_wch(ptr) == ERR {
+                throw CursesError(.getCharError)
             }
         }
         return c

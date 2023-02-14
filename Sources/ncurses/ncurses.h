@@ -1,5 +1,6 @@
 #define NCURSES_WIDECHAR 1
 #include <ncurses.h>
+#include <stdlib.h> // Required for wctomb
 
 // Swift does not pick up the `get_wch` method
 static inline int swift_get_wch(wchar_t* ch) {
@@ -61,6 +62,19 @@ const int swift_A_ITALIC = A_ITALIC;
 #else
 const int swift_A_ITALIC = NCURSES_BITS(1U,23);
 #endif
+
+//====================
+// Wide char function
+//====================
+
+const int8_t* wcharToBytes(wchar_t wc) {
+  static char charBuffer[10];
+  int len = wctomb(charBuffer, wc);
+  if (len <= 0) {
+    return NULL;
+  }
+  return (int8_t*) charBuffer;
+}
 
 //======
 // Keys
