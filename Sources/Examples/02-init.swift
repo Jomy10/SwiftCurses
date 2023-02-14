@@ -25,7 +25,7 @@ func initUsage() throws {
 			}
 		}
 
-		try scr.refresh()
+		scr.refresh()
 		try scr.getChar()
 	}
 }

@@ -107,7 +107,21 @@ extension WindowProtocol {
 		return 0
 	}
 
-	public func chgat(_ n: Int32, _ attrs: Attribute..., pair: Int16, opts: UnsafeRawPointer? = nil) {
+	@inlinable
+	func chgat(_ n: Int32, _ attrs: [Attribute], color pair: Int16, opts: UnsafeRawPointer? = nil) {
 		ncurses.wchgat(self.window, n, attr_t(attrs.combine()), pair, opts)
+	}
+
+	@inlinable
+	public func chgat(row: Int32, col: Int32, _ n: Int32, _ attrs: Attribute..., color pair: Int16, opts: UnsafeRawPointer? = nil) throws {
+		try self.move(row: row, col: col)
+		self.chgat(n, attrs, color: pair, opts: opts)
+	}
+
+	/// change the attributes of already printed text
+	// TODO: better documentation/more expressive
+	@inlinable
+	public func chgat(_ n: Int32, _ attrs: Attribute..., color pair: Int16, opts: UnsafeRawPointer? = nil) {
+		self.chgat(n, attrs, color: pair, opts: opts)
 	}
 }

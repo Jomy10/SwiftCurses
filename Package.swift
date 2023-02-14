@@ -27,6 +27,7 @@ let package = Package(
         .executableTarget(
             name: "Examples",
             dependencies: ["SwiftCurses"],
+            exclude: ["README.md"],
             swiftSettings: [.unsafeFlags([
                 "-Xfrontend",
                 "-warn-long-function-bodies=100",

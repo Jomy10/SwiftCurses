@@ -22,6 +22,8 @@ func main() throws {
 			try inputExample()
 		case "attributes":
 			try attributesExample()
+		case "chgat":
+			try chgatExample()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":
