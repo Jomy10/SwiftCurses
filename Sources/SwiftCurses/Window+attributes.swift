@@ -120,6 +120,7 @@ extension WindowProtocol {
 
 	/// change the attributes of already printed text
 	// TODO: better documentation/more expressive
+	// TODO: consider renaming to changeAttr
 	@inlinable
 	public func chgat(_ n: Int32, _ attrs: Attribute..., color pair: Int16, opts: UnsafeRawPointer? = nil) {
 		self.chgat(n, attrs, color: pair, opts: opts)

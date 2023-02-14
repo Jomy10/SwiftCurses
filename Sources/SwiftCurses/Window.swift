@@ -25,6 +25,11 @@ open class ManagedWindow: WindowProtocol {
         self.onInit()
     }
 
+    public convenience init(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws {
+        let winPtr: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
+        self.init(winPtr)
+    }
+
     open func onInit() {}
     open func onDeinit() {}
 
@@ -71,11 +76,13 @@ public func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settings
 // Generic function allows the user to define their own window types (e.g. window with borders)
 /// Returns a managed class object that can be passed around.
 @inlinable
+@available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
 public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
     return try newWindow(lines: lines, cols: cols, begin: begin.tuple, settings: settings)
 }
 
 /// Returns a managed class object that can be passed around.
+@available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
 public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
     let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
     let window = ManagedWindowType(win)
