@@ -91,12 +91,12 @@ extension WindowProtocol {
 	}
 
 	@inlinable
-	public func horLine(y: Int32, x: Int32, _ ch: Character = "\u{0}", _ n: Int32) throws {
-		try self.horLine(y: y, x: x, UInt32(ch.asciiValue!), n)
+	public func horLine(row y: Int32, col x: Int32, _ ch: Character = "\u{0}", _ n: Int32) throws {
+		try self.horLine(row: y, col: x, UInt32(ch.asciiValue!), n)
 	}
 
 	@inlinable
-	public func horLine(y: Int32, x: Int32, _ ch: UInt32, _ n: Int32) throws {
+	public func horLine(row y: Int32, col x: Int32, _ ch: UInt32, _ n: Int32) throws {
 		try self.move(row: y, col: x)
 		self.horLine(ch, n)
 	}
@@ -111,12 +111,12 @@ extension WindowProtocol {
 	}
 
 	@inlinable
-	public func vertLine(y: Int32, x: Int32, _ ch: Character = "\u{0}", _ n: Int32) throws {
-		try self.vertLine(y: y, x: x, UInt32(ch.asciiValue!), n)
+	public func vertLine(row y: Int32, col x: Int32, _ ch: Character = "\u{0}", _ n: Int32) throws {
+		try self.vertLine(row: y, col: x, UInt32(ch.asciiValue!), n)
 	}
 
 	@inlinable
-	public func vertLine(y: Int32, x: Int32, _ ch: UInt32, _ n: Int32) throws {
+	public func vertLine(row y: Int32, col x: Int32, _ ch: UInt32, _ n: Int32) throws {
 		try self.move(row: y, col: x)
 		self.vertLine(ch, n)
 	}

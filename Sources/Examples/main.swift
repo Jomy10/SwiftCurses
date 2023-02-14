@@ -26,6 +26,8 @@ func main() throws {
 			try chgatExample()
 		case "window":
 			try windowExample()
+		case "moreBorderFuncs":
+			try borderExample()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":

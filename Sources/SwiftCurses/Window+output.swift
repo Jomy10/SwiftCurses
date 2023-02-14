@@ -53,7 +53,7 @@ extension WindowProtocol {
 
     /// - `mvaddch`
     @inlinable
-    public func addChar(row: Int32, col: Int32, ch: Character) throws {
+    public func addChar(row: Int32, col: Int32, _ ch: Character) throws {
         try self.move(row: row, col: col)
         try self.addChar(ch)
     }
