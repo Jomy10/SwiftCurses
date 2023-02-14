@@ -20,6 +20,8 @@ func main() throws {
 			try printExample()
 		case "input":
 			try inputExample()
+		case "attributes":
+			try attributesExample()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":

@@ -54,7 +54,7 @@ func mouse() throws {
 			c = try menuWin.getCharCode()
 			switch c {
 				case KeyCode.mouse:
-					if let event = try MouseEvent.get() {
+					if let event = MouseEvent.get() {
 						// when the user clicks the left mouse button
 						if event.isPressed(.button1) {
 							reportChoice(event.x + 1, event.y + 1, &choice)
