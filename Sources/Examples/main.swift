@@ -28,6 +28,8 @@ func main() throws {
 			try windowExample()
 		case "moreBorderFuncs":
 			try borderExample()
+		case "colors":
+			try colorsExample()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":
