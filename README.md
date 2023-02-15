@@ -31,7 +31,7 @@ In you swift package:
 
 ```swift
 dependencies: [
-  .package(name: "SwiftCurses", url: "https://github.com/jomy10/SwiftCurses.git", branch: .main)
+  .package(url: "https://github.com/jomy10/SwiftCurses.git", branch: "master")
 ]
 ```
 
