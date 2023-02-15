@@ -3,8 +3,9 @@
 #include <stdlib.h> // Required for wctomb
 
 // Swift does not pick up the `get_wch` method
-static inline int swift_get_wch(wchar_t* ch) {
-  return get_wch(ch);
+static inline int swift_wget_wch(WINDOW* win, wchar_t* ch) {
+  // TODO: wget_wch
+  return wget_wch(win, ch);
 }
 
 static inline int swift_waddwstr(WINDOW* win, const wchar_t* ch) {
@@ -67,13 +68,18 @@ const int swift_A_ITALIC = NCURSES_BITS(1U,23);
 // Wide char function
 //====================
 
-const int8_t* wcharToBytes(wchar_t wc) {
+struct swift_wcharBytesReturnType {
+  const int8_t* bytes;
+  int len;
+};
+
+struct swift_wcharBytesReturnType wcharToBytes(wchar_t wc) {
   static char charBuffer[10];
   int len = wctomb(charBuffer, wc);
-  if (len <= 0) {
-    return NULL;
-  }
-  return (int8_t*) charBuffer;
+  return (struct swift_wcharBytesReturnType) {
+    (int8_t*) charBuffer,
+    len
+  };
 }
 
 //======

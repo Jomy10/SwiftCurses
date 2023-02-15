@@ -30,6 +30,8 @@ func main() throws {
 			try borderExample()
 		case "colors":
 			try colorsExample()
+		case "keyboard":
+			try keyboardExample()
 		case "mouse":
 			try mouse()
 		case "tempLeaveCurses":

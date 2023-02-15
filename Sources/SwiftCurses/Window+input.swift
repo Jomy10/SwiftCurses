@@ -6,46 +6,26 @@ import Foundation
 // Detect system encoding -> used for wide characters
 let string32Encoding: String.Encoding = (1.littleEndian == 1) ? .utf32LittleEndian : .utf32BigEndian
 
-public typealias WideChar = wchar_t
+public enum WideChar {
+    /// A UTF-8 characer
+    case char(Character)
+    /// A KeyCode
+    case code(Int32)
+}
 
-extension WideChar {
-    /// Get the character value
-    public var char: Character {
-        #if canImport(Foundation)
-        withUnsafePointer(to: self) { ptr in
-            let data = Data(bytes: ptr, count: MemoryLayout<wchar_t>.stride)
-            return String(data: data, encoding: string32Encoding)!.first.unsafelyUnwrapped // should always return a valid character (todo check)
-        }
-        #else
-        guard let bytes = wcharToBytes(self) else {
-            return Character("\0")
-        }
-
-        return String(cString: bytes).first.unsafelyUnwrapped
-        #endif
+func wcharToCharacter(_ wc: wchar_t) throws -> Character {
+    #if canImport(Foundation)
+    return withUnsafePointer(to: wc) { ptr in
+        let data = Data(bytes: ptr, count: MemoryLayout<wchar_t>.stride)
+        return String(data: data, encoding: string32Encoding)!.first.unsafelyUnwrapped // should always return a valid character (todo check)
+    }
+    #else
+    guard let bytes = wcharToBytes(wc) else {
+        throw CursesError(.error)
     }
 
-    /// Get the KeyCode value
-    public var code: Int32 {
-        guard let bytes = wcharToBytes(self) else {
-            return -1
-        }
-
-        return Int32(bytes[0])
-    }
-
-    public static func ==(lhs: WideChar, rhs: Character) -> Bool {
-        return lhs.char == rhs
-    }
-
-    public static func !=(lhs: WideChar, rhs: Character) -> Bool {
-        return lhs.char != rhs
-    }
-
-    // will wchar_t ever be invalid causing the c function to fail?
-    // public func code() throws -> Int32 {
-        
-    // }
+    return String(cString: bytes).first.unsafelyUnwrapped
+    #endif
 }
 
 extension WindowProtocol {
@@ -56,17 +36,21 @@ extension WindowProtocol {
     /// Get a UTF-8 character from the user.
     ///
     /// - Returns:
-    ///    - A `WideChar`, the KeyCode can be gotten using `WideChar.code` and
-    ///      the the Character itelf can be gotten with `WideChar.char`
+    ///     - a `WideChar`: this is either a key code or a UTF-8 encoded character
     @discardableResult
     public func getChar() throws -> WideChar {
         var c: wchar_t = wchar_t.init()
-        try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
-            if ncurses.swift_get_wch(ptr) == ERR {
-                throw CursesError(.getCharError)
+        return try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) in
+            let returnCode = ncurses.swift_wget_wch(self.window, ptr)
+            switch (returnCode) {
+                case ERR:
+                    throw CursesError(.getCharError)
+                case 256: // function keys
+                    return .code(ptr.pointee)
+                default: // OK > character
+                    return .char(try wcharToCharacter(ptr.pointee))
             }
         }
-        return c
     }
 
     /// Get the ASCII value of the character or keypress (when using keypad mode)
@@ -78,19 +62,6 @@ extension WindowProtocol {
                 throw CursesError(.timeoutWithoutData)
             } else if c == EINTR {
                 throw CursesError(.interrupted)
-            }
-        }
-        return c
-    }
-
-    /// Get a `WideChar`. This can then be converted to either a `Character` using `.char` or a CharCode (of type `Int32`) uing `.code`
-    @discardableResult
-    @available(*, deprecated, message: "Use getChar instead")
-    public func getWChar() throws -> WideChar {
-        var c: wchar_t = wchar_t.init()
-        try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) throws in
-            if ncurses.swift_get_wch(ptr) == ERR {
-                throw CursesError(.getCharError)
             }
         }
         return c
@@ -147,8 +118,15 @@ extension WindowProtocol {
     public func getStr(terminator: Character) throws -> String {
         var c = try self.getChar()
         var s = String()
-        while (c != terminator) {
-            s.append(c.char)
+        loop: while (true) {
+            switch c {
+                case .code(_): continue loop
+                case .char(let char):
+                    if char == terminator {
+                        break loop
+                    }
+                    s.append(char)
+            }
             c = try self.getChar()
         }
         return s

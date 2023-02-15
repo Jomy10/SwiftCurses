@@ -16,13 +16,18 @@ func initUsage() throws {
 		try scr.print("Type any character to see it in bold\n")
 		let ch = try scr.getChar()
 
-		if (ch.code == KeyCode.f(1)) {
-			try scr.print("F1 key pressed")
-		} else {
-			try scr.print("The pressed key is ")
-			try scr.withAttrs(.bold) {
-				try scr.print(ch.char)
-			}
+		switch ch {
+			case .code(let code):
+				if code == KeyCode.f(1) {
+					try scr.print("F1 key pressed")
+				} else {
+					try scr.print("Function key \(code) pressed")
+				}
+			case .char(let char):
+				try scr.print("The pressed key is ")
+				try scr.withAttrs(.bold) {
+					try scr.print(char)
+				}
 		}
 
 		scr.refresh()

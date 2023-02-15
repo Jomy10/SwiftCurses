@@ -25,32 +25,41 @@ func windowExample() throws {
 		scr.refresh()
 
 		// Create our custom window defined below
-		var myWin: BorderedWindow? = try BorderedWindow(lines: height, cols: width, begin: (starty, startx), settings: [])
+		var myWin: BorderedWindow? = try BorderedWindow(rows: height, cols: width, begin: (starty, startx), settings: [])
 		_ = myWin // supress Swift warning
 		var ch = try scr.getChar()
-		while ch.code != KeyCode.f(1) {
-			switch ch.code {
+		var keyCode: Int32?
+		if case .code(let code) = ch {
+			keyCode = code
+		}
+		while (keyCode ?? -1) != KeyCode.f(1) {
+			switch keyCode ?? -1 {
 				case KeyCode.left:
 					startx -= 1
 					myWin = nil 	// destroy the old window
-					myWin = try BorderedWindow(lines: height, cols: width, begin: (starty, startx), settings: [])
+					myWin = try BorderedWindow(rows: height, cols: width, begin: (starty, startx), settings: [])
 				case KeyCode.right:
 					startx += 1
 					myWin = nil
-					myWin = try BorderedWindow(lines: height, cols: width, begin: (starty, startx), settings: [])
+					myWin = try BorderedWindow(rows: height, cols: width, begin: (starty, startx), settings: [])
 				case KeyCode.up:
 					starty -= 1
 					myWin = nil
-					myWin = try BorderedWindow(lines: height, cols: width, begin: (starty, startx), settings: [])
+					myWin = try BorderedWindow(rows: height, cols: width, begin: (starty, startx), settings: [])
 				case KeyCode.down:
 					starty += 1
 					myWin = nil
-					myWin = try BorderedWindow(lines: height, cols: width, begin: (starty, startx), settings: [])
+					myWin = try BorderedWindow(rows: height, cols: width, begin: (starty, startx), settings: [])
 				default:
 					break
 			}
 
 			ch = try scr.getChar()
+			if case .code(let code) = ch {
+				keyCode = code
+			} else {
+				keyCode = nil
+			}
 		}
 	}
 }

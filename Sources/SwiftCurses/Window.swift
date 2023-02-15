@@ -25,8 +25,8 @@ open class ManagedWindow: WindowProtocol {
         self.onInit()
     }
 
-    public convenience init(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws {
-        let winPtr: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
+    public convenience init(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws {
+        let winPtr: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
         self.init(winPtr)
     }
 
@@ -41,11 +41,11 @@ open class ManagedWindow: WindowProtocol {
 
 /// Create a new ncurses window
 @inlinable
-internal func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> OpaquePointer {
-    guard let win = ncurses.newwin(lines, cols, begin.0, begin.1) else {
+internal func newWindow(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> OpaquePointer {
+    guard let win = ncurses.newwin(rows, cols, begin.0, begin.1) else {
         if begin.0 < 0 || begin.1 < 1 {
             throw CursesError(.negativeCoordinate, help: "The beginning coordinates of the window cannot be negative")
-        } else if lines < 0 {
+        } else if rows < 0 {
             throw CursesError(.negativeNumber, help: "The lines cannot be negative")
         } else if cols < 0 {
             throw CursesError(.negativeNumber, help: "The cols cannot be negative")
@@ -61,13 +61,13 @@ internal func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settin
 
 /// Create a new window
 @inlinable
-public func newWindow(lines: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
-    try newWindow(lines: lines, cols: cols, begin: begin.tuple, settings: settings, body)
+public func newWindow(rows: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
+    try newWindow(rows: rows, cols: cols, begin: begin.tuple, settings: settings, body)
 }
 
 /// Create a new window
-public func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
-    let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
+public func newWindow(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
+    let win: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
     var window = Window(win)
     body(&window)
     delwin(win)
@@ -77,14 +77,14 @@ public func newWindow(lines: Int32, cols: Int32, begin: (Int32, Int32), settings
 /// Returns a managed class object that can be passed around.
 @inlinable
 @available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
-public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
-    return try newWindow(lines: lines, cols: cols, begin: begin.tuple, settings: settings)
+public func newWindow<ManagedWindowType: ManagedWindow>(rows: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
+    return try newWindow(rows: rows, cols: cols, begin: begin.tuple, settings: settings)
 }
 
 /// Returns a managed class object that can be passed around.
 @available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
-public func newWindow<ManagedWindowType: ManagedWindow>(lines: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
-    let win: OpaquePointer = try newWindow(lines: lines, cols: cols, begin: begin, settings: settings)
+public func newWindow<ManagedWindowType: ManagedWindow>(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
+    let win: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
     let window = ManagedWindowType(win)
     return window
 }

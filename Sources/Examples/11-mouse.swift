@@ -43,31 +43,32 @@ func mouse() throws {
 		}
 
 		// Print the menu for the first time
-		let menuWin = try ManagedWindow(lines: HEIGHT, cols: WIDTH, begin: (starty, startx))
+		let menuWin = try ManagedWindow(rows: HEIGHT, cols: WIDTH, begin: (starty, startx))
 		try printMenu(menuWin, 1)
 
 		// Get all the mouse events
 		try MouseEvent.register(.allMouseEvents)
 
-		var c: WideChar = -1
 		loop: while true {
-			c = try menuWin.getChar()
-			switch c.code {
-				case KeyCode.mouse:
-					if let event = MouseEvent.get() {
-						// when the user clicks the left mouse button
-						if event.isPressed(.button1) {
-							reportChoice(event.x + 1, event.y + 1, &choice)
-							if choice == -1 { // Exit chosen
-								break loop
+			let c = try menuWin.getChar()
+			if case .code(let code) = c {
+				switch code {
+					case KeyCode.mouse:
+						if let event = MouseEvent.get() {
+							// when the user clicks the left mouse button
+							if event.isPressed(.button1) {
+								reportChoice(event.x + 1, event.y + 1, &choice)
+								if choice == -1 { // Exit chosen
+									break loop
+								}
+								try scr.print(row: 22, col: 1, "Choice made is : \(choice). String chosen is \(choices[choice - 1])")
+								scr.refresh()
 							}
-							try scr.print(row: 22, col: 1, "Choice made is : \(choice). String chosen is \(choices[choice - 1])")
-							scr.refresh()
 						}
-					}
-					try printMenu(menuWin, choice)
-				default:
-					continue
+						try printMenu(menuWin, choice)
+					default:
+						continue
+				}
 			}
 		} // end loop
 	} // end screen
