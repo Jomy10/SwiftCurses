@@ -10,6 +10,8 @@ public func initScreen(
     windowSettings: [WindowSetting] = WindowSetting.defaultSettings,
     _ body: (inout Window) throws -> ()
 ) throws {
+    ncurses.setlocale(LC_ALL, "") // support for wide chars
+
     guard let _scr = initscr() else { // start curses mode
         throw CursesError(.cannotCreateWindow)
     }
@@ -19,7 +21,6 @@ public func initScreen(
 
     try settings.forEach { try $0.apply() }
     windowSettings.forEach { $0.apply(_scr) }
-    ncurses.setlocale(LC_ALL, "") // support for wide chars
 
     var scr = Window(_scr)
     try body(&scr)
