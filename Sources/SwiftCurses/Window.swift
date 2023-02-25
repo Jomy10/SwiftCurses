@@ -15,6 +15,10 @@ public struct Window: WindowProtocol {
 
 open class ManagedWindow: WindowProtocol {
     private var __window: OpaquePointer?
+    private var __rows: Int32? = nil
+    private var __cols: Int32? = nil
+    public var rows: Int32 { self.__rows! }
+    public var cols: Int32 { self.__cols! }
 
     public var window: OpaquePointer {
         return self.__window!
@@ -28,6 +32,8 @@ open class ManagedWindow: WindowProtocol {
     public convenience init(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws {
         let winPtr: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
         self.init(winPtr)
+        self.__rows = rows
+        self.__cols = cols
     }
 
     open func onInit() {}

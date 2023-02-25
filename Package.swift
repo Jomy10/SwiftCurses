@@ -21,9 +21,11 @@ let package = Package(
                 .brew(["ncurses"])
                 // TODO
             ]),
+            
         .target(
             name: "SwiftCurses",
             dependencies: ["ncurses"]),
+            
         .executableTarget(
             name: "Examples",
             dependencies: ["SwiftCurses"],
@@ -34,6 +36,7 @@ let package = Package(
                 "-Xfrontend",
                 "-warn-long-expression-type-checking=100"
             ])]),
+
         .testTarget(
             name: "ncursesTests",
             dependencies: ["SwiftCurses"]),

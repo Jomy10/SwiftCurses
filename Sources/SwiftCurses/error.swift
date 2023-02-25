@@ -54,11 +54,7 @@ public struct CursesError: Error & CustomDebugStringConvertible {
 		self.help = help ?? kind.help
 	}
 
-	var description: String {
-		"Error: \(self.kind)\n\(self.help == nil ? "" : "Help: \(self.help!)")"
-	}
-
 	public var debugDescription: String {
-		self.description
+		"Error: \(self.kind)\n\(self.help == nil ? "" : "Help: \(self.help!)")"
 	}
 }
