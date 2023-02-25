@@ -47,7 +47,11 @@ extension WindowProtocol {
             self.window,
             u32.withUnsafeBufferPointer { $0.baseAddress! }
         ) == ERR {
-            throw CursesError(.error, help: "https://invisible-island.net/ncurses/man/curs_addch.3x.html#h2-RETURN-VALUE")
+            if !ncurses.is_scrollok(self.window) {
+                throw CursesError(.unableToAddCompleteCharToScreen, help: "This may be due to adding a character to the bottom right corner: https://invisible-island.net/ncurses/man/curs_add_wch.3x.html#h2-RETURN-VALUE")
+            } else {
+                throw CursesError(.unableToAddCompleteCharToScreen, help: "https://invisible-island.net/ncurses/man/curs_add_wch.3x.html#h2-RETURN-VALUE")
+            }
         }
     }
 

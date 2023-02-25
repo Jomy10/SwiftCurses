@@ -9,6 +9,9 @@ public enum TermSetting {
     case noEcho
     case nl
     case noNl
+    /// Raw is similar to `cbreak`, the difference is that in raw mode, the interrupt,
+    /// quit, suspend and flow control characters are passed through uninterreted instead
+    /// of generating a signal
     case raw
     case noRaw
     case qiFlush
@@ -23,6 +26,10 @@ public enum TermSetting {
 
 /// https://invisible-island.net/ncurses/man/curs_inopts.3x.html
 public enum WindowSetting {
+    /// If this option is enabled and an interrupt key is passed on the keyboard (interrupt, break, quit),
+    /// all output in the tty driver queue will be flushed, giving the effect of faster response to the interrupt,
+    /// but causing curses to have the wrong idea of what is on the screen. The default setting for this
+    /// option is inherited from the tty driver settings
     case intrflush(Bool)
     case keypad(Bool)
     case meta(Bool)
@@ -32,7 +39,7 @@ public enum WindowSetting {
 }
 
 extension TermSetting {
-    public static let defaultSettings: [TermSetting] = [.raw, .noEcho, .colors]
+    public static let defaultSettings: [TermSetting] = [.cbreak, .noEcho, .colors]
 }
 
 extension WindowSetting {

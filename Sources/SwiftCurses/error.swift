@@ -22,6 +22,10 @@ public enum ErrorKind {
 	case couldNotOpenFile
 	/// Terminal does not support moue as indicated by `MouseEvent.hasMouse`
 	case noMouseSupport
+
+	// add_wch
+	case unableToAddCompleteCharToScreen
+	
 	/// Generic error
 	case error
 
