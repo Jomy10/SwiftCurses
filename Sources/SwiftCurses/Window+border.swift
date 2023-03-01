@@ -14,6 +14,7 @@ extension WindowProtocol {
 		ncurses.box(self.window, UInt32(vertCh.asciiValue!), UInt32(horCh.asciiValue!))
 	}
 
+	@inlinable
 	public func box(_ vertCh: UInt32, _ horCh: UInt32) {
 		// X/Open does not define any error conditions. This implementation returns an error if the window pointer is null.
 		ncurses.box(self.window, vertCh, horCh)

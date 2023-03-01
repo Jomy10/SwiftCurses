@@ -10,7 +10,7 @@ let package = Package(
             name: "SwiftCurses",
             targets: ["SwiftCurses"]),
         .executable(
-            name: "SwiftCursesExamples",
+            name: "Examples",
             targets: ["Examples"])
     ],
     dependencies: [],

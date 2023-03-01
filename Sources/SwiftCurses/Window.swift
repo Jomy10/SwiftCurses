@@ -14,23 +14,20 @@ public struct Window: WindowProtocol {
 }
 
 open class ManagedWindow: WindowProtocol {
-    private var __window: OpaquePointer?
+    public let window: OpaquePointer
     private var __rows: Int32? = nil
     private var __cols: Int32? = nil
     private var destroyed = false
+    
     /// will not be known when loading a window from a file
     public var rows: Int32? { self.__rows }
     /// will not be known when loading a window from a file
     public var cols: Int32? { self.__cols }
 
-    public var window: OpaquePointer {
-        return self.__window!
-    }
-
     public required init(_ window: OpaquePointer, rows: Int32? = nil, cols: Int32? = nil) {
         self.__rows = rows
         self.__cols = cols
-        self.__window = window
+        self.window = window
         self.onInit()
     }
 
@@ -42,7 +39,7 @@ open class ManagedWindow: WindowProtocol {
     open func onInit() {}
     open func onDeinit() {}
 
-    public func destroy() {
+    private func destroy() {
         onDeinit()
         if rows != nil {
             for r in 0..<rows! {
@@ -70,7 +67,7 @@ open class ManagedWindow: WindowProtocol {
         }
         self.refresh()
         
-        ncurses.delwin(self.__window)
+        ncurses.delwin(self.window)
 
         self.destroyed = true
     }
@@ -113,20 +110,4 @@ public func newWindow(rows: Int32, cols: Int32, begin: (Int32, Int32), settings:
     var window = Window(win)
     body(&window)
     delwin(win)
-}
-
-// Generic function allows the user to define their own window types (e.g. window with borders)
-/// Returns a managed class object that can be passed around.
-@inlinable
-@available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
-public func newWindow<ManagedWindowType: ManagedWindow>(rows: Int32, cols: Int32, begin: Coordinate, settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
-    return try newWindow(rows: rows, cols: cols, begin: begin.tuple, settings: settings)
-}
-
-/// Returns a managed class object that can be passed around.
-@available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
-public func newWindow<ManagedWindowType: ManagedWindow>(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
-    let win: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
-    let window = ManagedWindowType(win, rows: rows, cols: cols)
-    return window
 }

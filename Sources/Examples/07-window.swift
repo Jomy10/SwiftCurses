@@ -71,18 +71,20 @@ fileprivate class BorderedWindow: ManagedWindow {
 	}
 
 	override func onDeinit() {
+		// the following code is not necessary as SwiftCurses cleans up windows
+		// completely, including setting all of its cells to " "
 		// set all border characters to be a space
-		self.border(
-			left: " ",
-			right: " ",
-			top: " ",
-			bottom: " ",
-			topLeft: " ",
-			topRight: " ",
-			bottomLeft: " ",
-			bottomRight: " "
-		)
-		self.refresh()
+		// self.border(
+		// 	left: " ",
+		// 	right: " ",
+		// 	top: " ",
+		// 	bottom: " ",
+		// 	topLeft: " ",
+		// 	topRight: " ",
+		// 	bottomLeft: " ",
+		// 	bottomRight: " "
+		// )
+		// self.refresh()
 		// delwin is done when this object is deallocated
 	}
 }
