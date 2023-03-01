@@ -27,7 +27,7 @@ func helloWorld() throws {
 
 [ncuses](https://invisible-island.net/ncurses#packages) must be installed on the system.
 
-In you swift package:
+In your swift package:
 
 ```swift
 dependencies: [

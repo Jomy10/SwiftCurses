@@ -17,31 +17,67 @@ open class ManagedWindow: WindowProtocol {
     private var __window: OpaquePointer?
     private var __rows: Int32? = nil
     private var __cols: Int32? = nil
-    public var rows: Int32 { self.__rows! }
-    public var cols: Int32 { self.__cols! }
+    private var destroyed = false
+    /// will not be known when loading a window from a file
+    public var rows: Int32? { self.__rows }
+    /// will not be known when loading a window from a file
+    public var cols: Int32? { self.__cols }
 
     public var window: OpaquePointer {
         return self.__window!
     }
 
-    public required init(_ window: OpaquePointer) {
+    public required init(_ window: OpaquePointer, rows: Int32? = nil, cols: Int32? = nil) {
+        self.__rows = rows
+        self.__cols = cols
         self.__window = window
         self.onInit()
     }
 
     public convenience init(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws {
         let winPtr: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
-        self.init(winPtr)
-        self.__rows = rows
-        self.__cols = cols
+        self.init(winPtr, rows: rows, cols: cols)
     }
 
     open func onInit() {}
     open func onDeinit() {}
 
-    deinit {
+    public func destroy() {
         onDeinit()
+        if rows != nil {
+            for r in 0..<rows! {
+                for c in 0..<cols! {
+                    try? self.addChar(row: r, col: c, " ")
+                }
+            }
+        } else {
+            var r: Int32 = 0
+            var c: Int32 = 0
+            var prevFailed = false
+            loop: while true {
+                do {
+                    try self.addChar(row: r, col: c, " ")
+                    r += 1
+                    prevFailed = false
+                } catch {
+                    if prevFailed { break loop }
+                    r = 0
+                    c += 1
+                    prevFailed = true
+                }
+            
+            }
+        }
+        self.refresh()
+        
         ncurses.delwin(self.__window)
+
+        self.destroyed = true
+    }
+
+    deinit {
+        if self.destroyed { return }
+        self.destroy()
     }
 }
 
@@ -91,6 +127,6 @@ public func newWindow<ManagedWindowType: ManagedWindow>(rows: Int32, cols: Int32
 @available(*, deprecated, message: "Use initializer of ManagedWindow class or subclass instead")
 public func newWindow<ManagedWindowType: ManagedWindow>(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> ManagedWindowType {
     let win: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
-    let window = ManagedWindowType(win)
+    let window = ManagedWindowType(win, rows: rows, cols: cols)
     return window
 }

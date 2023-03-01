@@ -1,6 +1,9 @@
 import ncurses
 
 public struct KeyCode {
+	/// The type of the KeyCode values
+	public typealias type = Int32
+
 	public static let `break` = KEY_BREAK	// Break key
 	public static let down = KEY_DOWN	// Arrow down
 	public static let up = KEY_UP	// Arrow up
