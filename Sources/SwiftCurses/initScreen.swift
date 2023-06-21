@@ -33,6 +33,7 @@ public func initScreen(
 /// - Parameters:
 ///     - `settings`: NCurses settings
 ///     - `body`: The paramater passed to the `body` function can be used to call ncures functions on the screen that was created
+@available(macOS 10.15.0, *)
 public func initScreenAsync(
     settings: [TermSetting] = TermSetting.defaultSettings,
     windowSettings: [WindowSetting] = WindowSetting.defaultSettings,
