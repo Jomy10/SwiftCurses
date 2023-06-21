@@ -30,7 +30,7 @@ extension WindowProtocol {
 
 	/// Move the cursor to the specified coordinate
 	@inlinable
-	public func move(to positon: Coordinate) throws {
+	public func move(to position: Coordinate) throws {
 		try self.move(row: position.y, col: position.x)
 	}
 
