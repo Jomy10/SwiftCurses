@@ -16,18 +16,26 @@ extension WindowProtocol {
 		}
 	}
 
+	/// Move the cursor `x` step(s) into the specified direction
 	@inlinable
-	public func move(_ direction: Direction) throws {
+	public func move(_ direction: Direction, times steps: Int32 = 1) throws {
 		let (y, x) = self.yx.tuple
 		switch direction {
-			case .up: try self.move(row: y - 1, col: x)
-			case .down: try self.move(row: y + 1, col: x)
-			case .right: try self.move(row: y, col: x + 1)
-			case .left: try self.move(row: y, col: x - 1)
+			case .up: try self.move(row: y - steps, col: x)
+			case .down: try self.move(row: y + steps, col: x)
+			case .right: try self.move(row: y, col: x + steps)
+			case .left: try self.move(row: y, col: x - steps)
 		}
 	}
 
+	/// Move the cursor to the specified coordinate
+	@inlinable
+	public func move(to positon: Coordinate) throws {
+		try self.move(row: position.y, col: position.x)
+	}
+
 	// TODO: in some implementations, refresh might be a macro
+	/// Refreshes the screen, drawing anything that hasn't been drawn yet
 	@inlinable
 	public func refresh() {
 		// X/Open does not define any error conditions.
