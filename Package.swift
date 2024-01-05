@@ -18,8 +18,9 @@ let package = Package(
         .systemLibrary(
             name: "ncurses",
             providers: [
-                .brew(["ncurses"])
-                // TODO
+                .brew(["ncurses"]),
+                .apt(["libncurses5-dev", "libncursesw5-dev"]),
+                .yum(["ncurses-devel"])
             ]),
             
         .target(
