@@ -6,6 +6,7 @@ public typealias ColorPairId = Int16
 public typealias ColorId = Int16
 public typealias ColorRGB = Int16
 
+// TODO: conform to OptionSet
 public struct Color {
 	/// Whether the terminal can manipulate colors.
 	///

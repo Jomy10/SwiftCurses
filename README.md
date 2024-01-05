@@ -14,12 +14,10 @@ SwiftCurses is a Swifty wrapper for ncurses.
 ```swift
 import SwiftCurses
 
-func helloWorld() throws {
-  try initScreen() { scr in
+try initScreen() { scr in
     try scr.print("Hello world !!!")
     scr.refresh()
     try scr.getChar()
-  }
 }
 ```
 
