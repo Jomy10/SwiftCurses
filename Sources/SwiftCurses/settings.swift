@@ -77,7 +77,7 @@ extension TermSetting {
 
 extension WindowSetting {
     @usableFromInline
-    func apply(_ win: OpaquePointer) {
+    func apply(_ win: WindowPointer) {
         switch self {
             case .intrflush(let bf): ncurses.intrflush(win, bf)
             case .keypad(let bf): ncurses.keypad(win, bf)
