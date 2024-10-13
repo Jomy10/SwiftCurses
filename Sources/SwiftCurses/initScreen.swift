@@ -1,5 +1,10 @@
 import ncurses
 
+#if os(Linux)
+import Glibc
+import ncursesw
+#endif
+
 /// Start a new curses mode terminal
 ///
 /// - Parameters:
@@ -10,9 +15,7 @@ public func initScreen(
     windowSettings: [WindowSetting] = WindowSetting.defaultSettings,
     _ body: (inout Window) throws -> ()
 ) throws {
-    #if !canImport(FoundationNetworking)
-    ncurses.setlocale(LC_ALL, "") // support for wide chars
-    #endif
+    setlocale(LC_ALL, "") // support for wide chars
 
     guard let _scr = initscr() else { // start curses mode
         throw CursesError(.cannotCreateWindow)
@@ -41,9 +44,7 @@ public func initScreenAsync(
     windowSettings: [WindowSetting] = WindowSetting.defaultSettings,
     _ body: (inout Window) async throws -> ()
 ) async throws {
-    #if !canImport(FoundationNetworking)
-    ncurses.setlocale(LC_ALL, "") // support for wide chars
-    #endif
+    setlocale(LC_ALL, "") // support for wide chars
 
     guard let _scr = initscr() else { // start curses mode
         throw CursesError(.cannotCreateWindow)
