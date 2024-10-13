@@ -2,7 +2,7 @@ import ncurses
 
 // TODO: documentation > https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/init.html
 /// https://invisible-island.net/ncurses/man/curs_inopts.3x.html
-public enum TermSetting {
+public enum TermSetting: Sendable, Hashable {
     case cbreak
     case noCbreak
     case echo
@@ -25,7 +25,7 @@ public enum TermSetting {
 }
 
 /// https://invisible-island.net/ncurses/man/curs_inopts.3x.html
-public enum WindowSetting {
+public enum WindowSetting: Sendable, Hashable {
     /// If this option is enabled and an interrupt key is passed on the keyboard (interrupt, break, quit),
     /// all output in the tty driver queue will be flushed, giving the effect of faster response to the interrupt,
     /// but causing curses to have the wrong idea of what is on the screen. The default setting for this

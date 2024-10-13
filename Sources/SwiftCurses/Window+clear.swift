@@ -1,7 +1,7 @@
 import ncurses
 
 /// Clear until option for `WindowProtocol.clear(until: ClearUntil)` method
-public enum ClearUntil {
+public enum ClearUntil: Sendable, Hashable {
 	/// erase the current line to the right of the cursor, inclusive, to the end
 	/// of the current line.
 	case endOfLine

@@ -1,6 +1,6 @@
 import ncurses
 
-public enum Attribute {
+public enum Attribute: Sendable, Hashable {
 	case normal
 	case standout
 	case underline
