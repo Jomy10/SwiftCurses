@@ -2,12 +2,8 @@
 #include <ncurses.h>
 #include <stdlib.h> // Required for wctomb
 
-#if TARGET_OS_LINUX
-#include <ncursesw.h>
-#endif
-
 // Swift does not pick up the `get_wch` method
-static inline int swift_wget_wch(WINDOW* win, unsigned int * ch) {
+static inline int swift_wget_wch(WINDOW* win, wchar_t* ch) {
   // TODO: wget_wch
   return wget_wch(win, ch);
 }
