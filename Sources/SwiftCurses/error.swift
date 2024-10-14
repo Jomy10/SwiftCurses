@@ -1,4 +1,4 @@
-public enum ErrorKind {
+public enum ErrorKind: Sendable, Hashable {
 	case halfdelayParameterOutsideOfRange
 	/// Window pointer is NULL
 	case cannotCreateWindow 
@@ -29,7 +29,7 @@ public enum ErrorKind {
 	/// Generic error
 	case error
 
-	var help: String? {
+	public var help: String? {
 		switch self {
 			case .cannotCreateWindow: return "The window returned was a null pointer"
 			case .getCharError: return "Timeout expired without having any data, or the eecution was interrupted by a signal (errno will be set to EINTR)"
@@ -44,7 +44,7 @@ public enum ErrorKind {
 	}
 }
 
-public struct CursesError: Error & CustomDebugStringConvertible {
+public struct CursesError: Error & CustomDebugStringConvertible, Sendable, Hashable {
 	public let kind: ErrorKind
 	public let help: String?
 

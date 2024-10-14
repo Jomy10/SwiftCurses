@@ -7,7 +7,7 @@ public typealias ColorId = Int16
 public typealias ColorRGB = Int16
 
 // TODO: conform to OptionSet
-public struct Color {
+public struct Color: Sendable, Hashable {
 	/// Whether the terminal can manipulate colors.
 	///
 	/// This routine facilitates writing terminal-independent programs.

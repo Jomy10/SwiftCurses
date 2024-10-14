@@ -1,6 +1,6 @@
 import ncurses
 
-public struct KeyCode {
+public struct KeyCode: Sendable, Hashable {
 	/// The type of the KeyCode values
 	public typealias type = Int32
 

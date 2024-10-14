@@ -1,6 +1,6 @@
 import ncurses
 
-public enum Direction {
+public enum Direction: Sendable, Hashable {
 	case up
 	case down
 	case left

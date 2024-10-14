@@ -1,6 +1,6 @@
 import ncurses
 
-public enum CursorVisibility: Int32 {
+public enum CursorVisibility: Int32, Sendable, Hashable {
 	case invisible = 0
 	case normal = 1
 	case veryVisible = 2

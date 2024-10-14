@@ -1,0 +1,5 @@
+module ncursesw [system] {
+	header "ncursesw.h"
+	link "ncursesw"
+	export *
+}
