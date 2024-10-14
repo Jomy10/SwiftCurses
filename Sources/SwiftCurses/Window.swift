@@ -1,20 +1,20 @@
 import ncurses
 
 public protocol WindowProtocol {
-    var window: OpaquePointer { get }
+    var window: WindowPointer { get }
 }
 
 public struct Window: WindowProtocol {
-    public let window: OpaquePointer
+    public let window: WindowPointer
 
-    init(_ window: OpaquePointer) {
+    init(_ window: WindowPointer) {
         // screen is not a null pointer => we can negate some error checks in our functions
         self.window = window
     }
 }
 
 open class ManagedWindow: WindowProtocol {
-    public let window: OpaquePointer
+    public let window: WindowPointer
     private var __rows: Int32? = nil
     private var __cols: Int32? = nil
     private var destroyed = false
@@ -24,7 +24,7 @@ open class ManagedWindow: WindowProtocol {
     /// will not be known when loading a window from a file
     public var cols: Int32? { self.__cols }
 
-    public required init(_ window: OpaquePointer, rows: Int32? = nil, cols: Int32? = nil) {
+    public required init(_ window: WindowPointer, rows: Int32? = nil, cols: Int32? = nil) {
         self.__rows = rows
         self.__cols = cols
         self.window = window
@@ -32,7 +32,7 @@ open class ManagedWindow: WindowProtocol {
     }
 
     public convenience init(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws {
-        let winPtr: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
+        let winPtr: WindowPointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
         self.init(winPtr, rows: rows, cols: cols)
     }
 
@@ -80,7 +80,7 @@ open class ManagedWindow: WindowProtocol {
 
 /// Create a new ncurses window
 @inlinable
-internal func newWindow(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> OpaquePointer {
+internal func newWindow(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings) throws -> WindowPointer {
     guard let win = ncurses.newwin(rows, cols, begin.0, begin.1) else {
         if begin.0 < 0 || begin.1 < 1 {
             throw CursesError(.negativeCoordinate, help: "The beginning coordinates of the window cannot be negative")
@@ -106,7 +106,7 @@ public func newWindow(rows: Int32, cols: Int32, begin: Coordinate, settings: [Wi
 
 /// Create a new window
 public func newWindow(rows: Int32, cols: Int32, begin: (Int32, Int32), settings: [WindowSetting] = WindowSetting.defaultSettings, _ body: (inout Window) -> ()) throws {
-    let win: OpaquePointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
+    let win: WindowPointer = try newWindow(rows: rows, cols: cols, begin: begin, settings: settings)
     var window = Window(win)
     body(&window)
     delwin(win)

@@ -6,7 +6,7 @@ import Foundation
 // Detect system encoding -> used for wide characters
 let string32Encoding: String.Encoding = (1.littleEndian == 1) ? .utf32LittleEndian : .utf32BigEndian
 
-public enum WideChar {
+public enum WideChar: Sendable, Hashable {
     /// A UTF-8 characer
     case char(Character)
     /// A KeyCode

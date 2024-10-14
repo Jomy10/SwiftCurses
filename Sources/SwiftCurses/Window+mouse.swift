@@ -1,6 +1,6 @@
 import ncurses
 
-public enum TrafoKind {
+public enum TrafoKind: Sendable, Hashable {
 	/// x and y are window-relative coordinates and will be converted to 
 	/// stdscr-relative coordinates
 	case toStdScrn

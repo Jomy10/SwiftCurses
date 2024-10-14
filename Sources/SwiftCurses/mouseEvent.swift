@@ -1,6 +1,6 @@
 import ncurses
 
-public enum MouseEventMask {
+public enum MouseEventMask: Sendable, Hashable {
 	case button1Pressed       // mouse button 1 down
 	case button1Released      // mouse button 1 up
 	case button1Clicked       // mouse button 1 clicked
@@ -60,7 +60,7 @@ public enum MouseEventMask {
 
 public typealias MouseEvent = ncurses.MEVENT
 
-public enum MouseButton {
+public enum MouseButton: Sendable, Hashable {
 	case button1
 	case button2
 	case button3
@@ -119,7 +119,7 @@ extension MouseButton {
 	}
 }
 
-public enum ModifierKey {
+public enum ModifierKey: Sendable, Hashable {
 	case shift
 	case ctrl
 	case alt
