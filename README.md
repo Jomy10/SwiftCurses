@@ -28,7 +28,7 @@ try initScreen() { scr in
 
 ## Installation
 
-[ncuses](https://invisible-island.net/ncurses#packages) must be installed on the system.
+[ncurses](https://invisible-island.net/ncurses#packages) must be installed on the system.
 
 In your swift package:
 
@@ -60,7 +60,7 @@ though keep in mind some functions may be missing/have a different name.
 ### Running the examples
 
 ```sh
-swift run SwiftCursesExamples [name of the example (see main.swift)]
+swift run Examples [name of the example (see main.swift)]
 ```
 
 ## Questions
