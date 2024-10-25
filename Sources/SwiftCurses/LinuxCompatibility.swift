@@ -7,3 +7,4 @@ public typealias WindowPointer = OpaquePointer
 #endif
 
 public typealias wchar_t = Int32
+
