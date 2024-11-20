@@ -1,4 +1,5 @@
 #define NCURSES_WIDECHAR 1
+#define NCURSES_OPAQUE
 #include <ncurses.h>
 #include <stdlib.h> // Required for wctomb
 
