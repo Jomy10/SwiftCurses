@@ -56,26 +56,29 @@ targets = [
             .yum(["ncurses-devel"])
         ]),
 
-        .target(
-            name: "SwiftCurses",
-            dependencies: [
-                "C_ncurses",
-            ]),
+    .target(
+        name: "SwiftCurses",
+        dependencies: [
+            "C_ncurses",
+        ],
+        swiftSettings: [
+          .define("SWIFTCURSES_OPAQUE")
+        ]),
 
-        .executableTarget(
-            name: "Examples",
-            dependencies: ["SwiftCurses"],
-            exclude: ["README.md"],
-            swiftSettings: [.unsafeFlags([
-                "-Xfrontend",
-                "-warn-long-function-bodies=100",
-                "-Xfrontend",
-                "-warn-long-expression-type-checking=100"
-            ])]),
+    .executableTarget(
+        name: "Examples",
+        dependencies: ["SwiftCurses"],
+        exclude: ["README.md"],
+        swiftSettings: [.unsafeFlags([
+            "-Xfrontend",
+            "-warn-long-function-bodies=100",
+            "-Xfrontend",
+            "-warn-long-expression-type-checking=100"
+        ])]),
 
-        .testTarget(
-            name: "ncursesTests",
-            dependencies: ["SwiftCurses"]),
+    .testTarget(
+        name: "ncursesTests",
+        dependencies: ["SwiftCurses"]),
 ]
 #endif
 
