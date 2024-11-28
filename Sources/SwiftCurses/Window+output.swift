@@ -1,8 +1,9 @@
 import ncurses
+import C_ncursesBinds
 
 extension WindowProtocol {
     //========
-    // printw 
+    // printw
     //========
 
     @inlinable
@@ -29,7 +30,7 @@ extension WindowProtocol {
     //========
     // addstr
     //========
-    
+
     @inlinable
     public func addStr(_ str: String) throws {
         if ncurses.waddstr(self.window, str) == ERR {
@@ -51,10 +52,10 @@ extension WindowProtocol {
     //======
     // adch
     //======
-    
+
     public func addChar(_ ch: Character) throws {
         let u32 = ch.unicodeScalars.map { wchar_t(bitPattern: $0.value) } + [0] // null-terminated UTF-8 character
-        if ncurses.swift_waddwstr(
+        if swift_waddwstr(
             self.window,
             u32.withUnsafeBufferPointer { $0.baseAddress! }
         ) == ERR {

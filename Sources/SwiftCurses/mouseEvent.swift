@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 public enum MouseEventMask: Sendable, Hashable {
 	case button1Pressed       // mouse button 1 down
@@ -224,5 +225,5 @@ extension MouseEvent {
 		self.id
 	}
 
-	
+
 }

@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 public enum Attribute: Sendable, Hashable {
 	case normal
@@ -21,31 +22,31 @@ extension Attribute {
 	var value: Int32 {
 		switch self {
 		case .normal:
-			return ncurses.swift_A_NORMAL
+			return swift_A_NORMAL
 		case .standout:
-			return ncurses.swift_A_STANDOUT
+			return swift_A_STANDOUT
 		case .underline:
-			return ncurses.swift_A_UNDERLINE
+			return swift_A_UNDERLINE
 		case .reverse:
-			return ncurses.swift_A_REVERSE
+			return swift_A_REVERSE
 		case .blink:
-			return ncurses.swift_A_BLINK
+			return swift_A_BLINK
 		case .dim:
-			return ncurses.swift_A_DIM
+			return swift_A_DIM
 		case .bold:
-			return ncurses.swift_A_BOLD
+			return swift_A_BOLD
 		case .protect:
-			return ncurses.swift_A_PROTECT
+			return swift_A_PROTECT
 		case .invisible:
-			return ncurses.swift_A_INVIS
+			return swift_A_INVIS
 		case .altCharset:
-			return ncurses.swift_A_ALTCHARSET
+			return swift_A_ALTCHARSET
 		case .chartext:
-			return ncurses.swift_A_CHARTEXT
+			return swift_A_CHARTEXT
 		case .colorPair(let n):
 			return swift_COLOR_PAIR(n)
 		case .italic:
-			return ncurses.swift_A_ITALIC
+			return swift_A_ITALIC
 		}
 	}
 }

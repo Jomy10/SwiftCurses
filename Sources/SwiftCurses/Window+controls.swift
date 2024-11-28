@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 public enum Direction: Sendable, Hashable {
 	case up

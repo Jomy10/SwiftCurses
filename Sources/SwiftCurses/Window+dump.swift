@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 #if canImport(Foundation)
 import Foundation
@@ -6,7 +7,7 @@ import Foundation
 
 extension WindowProtocol {
 	#if canImport(Foundation)
-	
+
 	@inlinable
 	public func get<WinType: ManagedWindow>(file: URL) throws -> WinType {
 		guard let filePtr = file.withUnsafeFileSystemRepresentation( { fopen($0, "w") } ) else {
@@ -24,9 +25,9 @@ extension WindowProtocol {
 			throw CursesError(.couldNotOpenFile)
 		}
 	}
-	
+
 	#else
-	
+
 	@inlinable
 	public func get(file: UnsafePointer<FILE>) -> OpaquePointer {
 		ncurses.getwin(file)
@@ -36,6 +37,6 @@ extension WindowProtocol {
 	public func put(file: UnsafePoiter<FILE>) -> Int32 {
 		ncurses.putwin(self.window, file)
 	}
-	
+
 	#endif
 }

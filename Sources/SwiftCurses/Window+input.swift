@@ -1,4 +1,6 @@
 import ncurses
+import C_ncursesBinds
+
 #if canImport(Foundation)
 import Foundation
 #endif
@@ -41,7 +43,7 @@ extension WindowProtocol {
     public func getChar() throws -> WideChar {
         var c: wchar_t = wchar_t.init()
         return try withUnsafeMutablePointer(to: &c) { (ptr: UnsafeMutablePointer<wchar_t>) in
-            let returnCode = ncurses.swift_wget_wch(self.window, ptr)
+            let returnCode = swift_wget_wch(self.window, ptr)
             switch (returnCode) {
                 case ERR:
                     throw CursesError(.getCharError)
@@ -95,7 +97,7 @@ extension WindowProtocol {
     @discardableResult
     public func getStrPtr() throws -> UnsafePointer<CChar> {
         let c: UnsafeMutablePointer<CChar> = UnsafeMutablePointer<CChar>.allocate(capacity: Int(self.maxYX.x) + 1)
-        let errno = ncurses.wgetstr(self.window, c) 
+        let errno = ncurses.wgetstr(self.window, c)
         if errno != OK {
             if errno == ERR {
                 throw CursesError(.timeoutWithoutData)

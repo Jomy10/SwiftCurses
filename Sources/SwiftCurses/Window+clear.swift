@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 /// Clear until option for `WindowProtocol.clear(until: ClearUntil)` method
 public enum ClearUntil: Sendable, Hashable {

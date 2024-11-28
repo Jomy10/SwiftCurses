@@ -3,68 +3,26 @@
 
 import PackageDescription
 
-let targets: [Target]
-#if canImport(FoundationNetworking)
-targets = [
-    .systemLibrary(
-        name: "C_ncurses",
-        pkgConfig: "ncurses",
-        providers: [
-            .brew(["ncurses"]),
-            .apt(["libncurses5-dev"]),
-            .yum(["ncurses-devel"])
+var targets: [Target] = [
+  .systemLibrary(
+      name: "C_ncurses",
+      pkgConfig: "ncurses",
+      providers: [
+          .apt(["libncurses5-dev"]),
+      ]),
+    .target(
+        name: "C_ncursesBinds",
+        dependencies: ["C_ncurses"],
+        cSettings: [
+          .headerSearchPath("../C_ncurses")
         ]),
-
-    .systemLibrary(
-        name: "C_ncursesw",
-        pkgConfig: "ncursesw",
-        providers: [
-            .brew(["ncurses"]),
-            .apt(["libncursesw5-dev"]),
-            .yum(["ncurses-devel"])
-        ]),
-
     .target(
         name: "SwiftCurses",
         dependencies: [
             "C_ncurses",
-            "C_ncursesw",
-        ]),
-
-    .executableTarget(
-        name: "Examples",
-        dependencies: ["SwiftCurses"],
-        exclude: ["README.md"],
-        swiftSettings: [.unsafeFlags([
-            "-Xfrontend",
-            "-warn-long-function-bodies=100",
-            "-Xfrontend",
-            "-warn-long-expression-type-checking=100"
-        ])]),
-
-    .testTarget(
-        name: "ncursesTests",
-        dependencies: ["SwiftCurses"]),
-]
-#else
-targets = [
-    .systemLibrary(
-        name: "C_ncurses",
-        providers: [
-            .brew(["ncurses"]),
-            .apt(["libncurses5-dev", "libncursesw5-dev"]),
-            .yum(["ncurses-devel"])
-        ]),
-
-    .target(
-        name: "SwiftCurses",
-        dependencies: [
-            "C_ncurses",
+            "C_ncursesBinds"
         ],
-        swiftSettings: [
-          .define("SWIFTCURSES_OPAQUE")
-        ]),
-
+        swiftSettings: []),
     .executableTarget(
         name: "Examples",
         dependencies: ["SwiftCurses"],
@@ -75,12 +33,74 @@ targets = [
             "-Xfrontend",
             "-warn-long-expression-type-checking=100"
         ])]),
-
     .testTarget(
         name: "ncursesTests",
         dependencies: ["SwiftCurses"]),
 ]
+
+#if os(macOS)
+targets
+  .first(where: { $0.name == "SwiftCurses" })!
+  .swiftSettings!
+  .append(.define("SWIFTCURSES_OPAQUE"))
+#else
+targets.append(
+  .systemLibrary(
+      name: "C_ncursesw",
+      pkgConfig: "ncursesw",
+      providers: [
+          .brew(["ncurses"]),
+          .apt(["libncursesw5-dev"]),
+          .yum(["ncurses-devel"])
+      ])
+)
+targets
+  .first(where: { $0.name == "SwiftCurses" })!
+  .dependencies
+  .append("C_ncursesw")
 #endif
+
+//#if canImport(FoundationNetworking)
+//targets = [
+
+
+//]
+//#else
+//targets = [
+//    .systemLibrary(
+//        name: "C_ncurses",
+//        providers: [
+//            .brew(["ncurses"]),
+//            .apt(["libncurses5-dev", "libncursesw5-dev"]),
+//            .yum(["ncurses-devel"])
+//        ]),
+
+//    .target(
+//        name: "SwiftCurses",
+//        dependencies: [
+//            "C_ncurses",
+//            "C_ncursesBinds"
+//        ],
+//        swiftSettings: [
+//          .define("SWIFTCURSES_OPAQUE")
+//        ]),
+
+//    .executableTarget(
+//        name: "Examples",
+//        dependencies: ["SwiftCurses"],
+//        exclude: ["README.md"],
+//        swiftSettings: [.unsafeFlags([
+//            "-Xfrontend",
+//            "-warn-long-function-bodies=100",
+//            "-Xfrontend",
+//            "-warn-long-expression-type-checking=100"
+//        ])]),
+
+//    .testTarget(
+//        name: "ncursesTests",
+//        dependencies: ["SwiftCurses"]),
+//]
+//#endif
 
 let package = Package(
     name: "SwiftCurses",

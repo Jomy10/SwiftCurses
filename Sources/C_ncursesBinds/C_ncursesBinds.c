@@ -1,39 +1,44 @@
 #define NCURSES_WIDECHAR 1
 #include <ncurses.h>
+#include <c_ncurses.h>
 #include <stdlib.h> // Required for wctomb
+#include "include/C_ncursesBinds.h"
+
+#ifndef wget_wch
+int wget_wch(WINDOW *win, wint_t *ch);
+#endif
+#ifndef waddwstr
+int waddwstr(WINDOW *win, const wint_t *ch);
+#endif
 
 // Swift does not pick up the `get_wch` method
-static inline int swift_wget_wch(WINDOW* win, wchar_t* ch) {
+inline int swift_wget_wch(WINDOW* win, wchar_t* ch) {
   return wget_wch(win, ch);
 }
 
-static inline int swift_waddwstr(WINDOW* win, const wchar_t* ch) {
+inline int swift_waddwstr(WINDOW* win, const wchar_t* ch) {
   return waddwstr(win, ch);
 }
 
-struct swift_YX {
-  int y, x;
-};
-
-static inline struct swift_YX swift_getbegyx(WINDOW* win) {
+inline struct swift_YX swift_getbegyx(WINDOW* win) {
   struct swift_YX yx;
   getbegyx(win, yx.y, yx.x);
   return yx;
 }
 
-static inline struct swift_YX swift_getmaxyx(WINDOW* win) {
+inline struct swift_YX swift_getmaxyx(WINDOW* win) {
   struct swift_YX yx;
   getmaxyx(win, yx.y, yx.x);
   return yx;
 }
 
-static inline struct swift_YX swift_getyx(WINDOW* win) {
+inline struct swift_YX swift_getyx(WINDOW* win) {
   struct swift_YX yx;
   getyx(win, yx.y, yx.x);
   return yx;
 }
 
-static inline struct swift_YX swift_getparyx(WINDOW* win) {
+inline struct swift_YX swift_getparyx(WINDOW* win) {
   struct swift_YX yx;
   getparyx(win, yx.y, yx.x);
   return yx;
@@ -54,7 +59,7 @@ const int swift_A_PROTECT = A_PROTECT;
 const int swift_A_INVIS = A_INVIS;
 const int swift_A_ALTCHARSET = A_ALTCHARSET;
 const int swift_A_CHARTEXT = A_CHARTEXT;
-static inline int swift_COLOR_PAIR(int n) {
+inline int swift_COLOR_PAIR(int n) {
   return COLOR_PAIR(n);
 }
 #ifdef A_ITALIC
@@ -66,11 +71,6 @@ const int swift_A_ITALIC = NCURSES_BITS(1U,23);
 //====================
 // Wide char function
 //====================
-
-struct swift_wcharBytesReturnType {
-  const int8_t* bytes;
-  int len;
-};
 
 struct swift_wcharBytesReturnType wcharToBytes(wchar_t wc) {
   static char charBuffer[10];
@@ -86,7 +86,7 @@ struct swift_wcharBytesReturnType wcharToBytes(wchar_t wc) {
 //======
 
 // fn keys
-static inline int swift_key_f(int n) {
+inline int swift_key_f(int n) {
   return KEY_F(n);
 }
 

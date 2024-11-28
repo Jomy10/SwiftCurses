@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 public struct KeyCode: Sendable, Hashable {
 	/// The type of the KeyCode values

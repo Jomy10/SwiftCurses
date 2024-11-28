@@ -1,4 +1,5 @@
 import ncurses
+import C_ncursesBinds
 
 // https://invisible-island.net/ncurses/man/curs_border.3x.html
 // X/Open does not define any error conditions. This implementation returns an error if the window pointer is null.
