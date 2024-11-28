@@ -1,6 +1,7 @@
 #ifndef _SWIFTCURSES_BINDS
 #define _SWIFTCURSES_BINDS
 
+#define NCURSES_WIDECHAR 1
 #include <ncurses.h>
 #include <wchar.h>
 
