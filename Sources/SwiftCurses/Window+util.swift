@@ -8,6 +8,17 @@ extension swift_YX {
 	@inlinable public var tuple: (Int32, Int32) { (self.y, self.x) }
 }
 
+extension swift_YX: @retroactive Equatable, @retroactive Hashable {
+  public static func ==(lhs: Self, rhs: Self) -> Bool {
+    lhs.x == rhs.x && lhs.y == rhs.y
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.x)
+    hasher.combine(self.y)
+  }
+}
+
 public typealias Coordinate = swift_YX
 
 extension WindowProtocol {

@@ -7,12 +7,18 @@
 
 import SwiftCurses
 
+fileprivate let WIDTH: Int32 = 30
+fileprivate let HEIGHT: Int32 = 10
+
+fileprivate nonisolated(unsafe) var startx: Int32 = 0
+fileprivate nonisolated(unsafe) var starty: Int32 = 0
+
 fileprivate let choices = [
- 	"Choice1",
- 	"Choice2",
- 	"Choice3",
- 	"Choice 4",
- 	"Exit",
+	"Choice1",
+	"Choice2",
+	"Choice3",
+	"Choice 4",
+	"Exit",
 ]
 fileprivate let nChoices = Int32(choices.count)
 
@@ -23,8 +29,6 @@ func keyboardExample() throws {
 
   var startx: Int32 = 0
   var starty: Int32 = 0
-
-  ////////
 
 	var highlight: Int32 = 1
 	var choice: Int32 = 0

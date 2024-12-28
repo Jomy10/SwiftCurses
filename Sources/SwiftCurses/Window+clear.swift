@@ -12,21 +12,26 @@ public enum ClearUntil: Sendable, Hashable {
 	case endOfScreen
 }
 
-
 extension WindowProtocol {
+  /// copy blanks to every position in the window, clearing the screen
 	@inlinable
 	public func erase() {
 		ncurses.werase(self.window)
 	}
 
+	/// like `erase`, but also calls `clearok`, so that the screen is cleared
+	/// completely on the next call to `refresh` for the window and repainted
+	/// from scratch
 	@inlinable
 	public func clear() {
 		ncurses.wclear(self.window)
 	}
 
-	@inlinable
+	/// Erases the screen from the position of the current cursor, to `until`
+	///
 	/// when `unitl` is `.endOfLine`, this function can throw if the cursor
 	/// is about to wrap.
+	@inlinable
 	public func clear(until: ClearUntil) throws {
 		switch until {
 			case .endOfLine:
