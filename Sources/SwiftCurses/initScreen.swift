@@ -1,7 +1,13 @@
 import ncurses
 
 #if os(Linux)
+#if canImport(Glibc)
 import Glibc
+#elseif canImport(Musl)
+import Musl
+#else
+#error("No standard C library for Linux target found")
+#endif
 import ncursesw
 #endif
 
@@ -42,7 +48,7 @@ public func initScreen(
 public func initScreenAsync(
     settings: [TermSetting] = TermSetting.defaultSettings,
     windowSettings: [WindowSetting] = WindowSetting.defaultSettings,
-    _ body: (inout Window) async throws -> ()
+    _ body: @Sendable (inout Window) async throws -> ()
 ) async throws {
     setlocale(LC_ALL, "") // support for wide chars
 
@@ -75,7 +81,7 @@ public func scrRestore(filename: String) {
 @inlinable
 public func scrInit(filename: String) {
     ncurses.scr_init(filename)
-} 
+}
 
 @inlinable
 public func scrSet(filename: String) {

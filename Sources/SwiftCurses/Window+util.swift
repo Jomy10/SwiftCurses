@@ -19,6 +19,12 @@ extension swift_YX: @retroactive Equatable, @retroactive Hashable {
   }
 }
 
+extension swift_YX: @retroactive CustomStringConvertible {
+  public var description: String {
+    "(row: \(self.row), col: \(self.col))"
+  }
+}
+
 public typealias Coordinate = swift_YX
 
 extension WindowProtocol {
