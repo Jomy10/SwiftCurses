@@ -1,6 +1,4 @@
-import ncurses
-
-// TODO: extended colors extension and other extensions
+@preconcurrency import ncurses // NOTE: preconcurrency --> we are importing constants from C, but they are imported as vars, they are concurrency safe, but the swift compiler has no way of knowing this
 
 public typealias ColorPairId = Int16
 public typealias ColorId = Int16
@@ -16,7 +14,7 @@ public struct Color: Sendable, Hashable {
 	public static let hasColors: Bool = has_colors()
 
 	public static let black		= ColorId(COLOR_BLACK)
-	public static let red		= ColorId(COLOR_RED)
+	public static let red		  = ColorId(COLOR_RED)
 	public static let green		= ColorId(COLOR_GREEN)
 	public static let yellow	= ColorId(COLOR_YELLOW)
 	public static let blue		= ColorId(COLOR_BLUE)
@@ -32,7 +30,7 @@ public struct Color: Sendable, Hashable {
 	public static let maxColors = COLORS
 
 	public static func forceXTerm256Color() {
-		setenv("TERM","xterm-256color", 1)
+		setenv("TERM", "xterm-256color", 1)
 	}
 
 	public static func define(_ id: ColorId, r: ColorRGB, g: ColorRGB, b: ColorRGB) throws {

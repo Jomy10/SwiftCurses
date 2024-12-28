@@ -10,8 +10,8 @@ import SwiftCurses
 fileprivate let WIDTH: Int32 = 30
 fileprivate let HEIGHT: Int32 = 10
 
-fileprivate var starty: Int32 = 0
-fileprivate var startx: Int32 = 0
+fileprivate nonisolated(unsafe) var starty: Int32 = 0
+fileprivate nonisolated(unsafe) var startx: Int32 = 0
 
 fileprivate let choices = [
 	"Choice 1",

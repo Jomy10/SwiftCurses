@@ -7,23 +7,25 @@
 
 import SwiftCurses
 
-fileprivate let WIDTH: Int32 = 30
-fileprivate let HEIGHT: Int32 = 10
-
-fileprivate var startx: Int32 = 0
-fileprivate var starty: Int32 = 0
-
 fileprivate let choices = [
-	"Choice1",
-	"Choice2",
-	"Choice3",
-	"Choice 4",
-	"Exit",
+ 	"Choice1",
+ 	"Choice2",
+ 	"Choice3",
+ 	"Choice 4",
+ 	"Exit",
 ]
 fileprivate let nChoices = Int32(choices.count)
 
 /// Example 10. A Simple Key Usage example
 func keyboardExample() throws {
+  let WIDTH: Int32 = 30
+  let HEIGHT: Int32 = 10
+
+  var startx: Int32 = 0
+  var starty: Int32 = 0
+
+  ////////
+
 	var highlight: Int32 = 1
 	var choice: Int32 = 0
 
