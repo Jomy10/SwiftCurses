@@ -2,8 +2,8 @@ import ncurses
 import C_ncursesBinds
 
 extension swift_YX {
-	@inlinable public var row: Int32 { self.x }
-	@inlinable public var col: Int32 { self.y }
+	@inlinable public var row: Int32 { self.y }
+	@inlinable public var col: Int32 { self.x }
 	/// Convert the `Coordinate` struct to a tuple of the form `(y, x)`
 	@inlinable public var tuple: (Int32, Int32) { (self.y, self.x) }
 }
