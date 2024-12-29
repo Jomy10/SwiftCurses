@@ -8,7 +8,7 @@ extension swift_YX {
 	@inlinable public var tuple: (Int32, Int32) { (self.y, self.x) }
 }
 
-extension swift_YX: @retroactive Equatable, @retroactive Hashable {
+extension C_ncursesBinds.swift_YX: Swift.Equatable, Swift.Hashable {
   public static func ==(lhs: Self, rhs: Self) -> Bool {
     lhs.x == rhs.x && lhs.y == rhs.y
   }
@@ -19,7 +19,7 @@ extension swift_YX: @retroactive Equatable, @retroactive Hashable {
   }
 }
 
-extension swift_YX: @retroactive CustomStringConvertible {
+extension C_ncursesBinds.swift_YX: Swift.CustomStringConvertible {
   public var description: String {
     "(row: \(self.row), col: \(self.col))"
   }

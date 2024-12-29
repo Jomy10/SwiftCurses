@@ -82,10 +82,10 @@ Always looking at improving this library, feel free to leave suggestions/pull re
 
 ## macOS version compatibility
 
-| macOS version | library version |
-|---------------|-----------------|
-| < 10.15       | <= 1.0.3        |
-| >= 10.15      | latest          |
+| macOS version | latest compatible library version |
+|---------------|-----------------------------------|
+| < 10.15       | <= 1.0.3                          |
+| >= 10.15      | latest                            |
 
 ## License
 
