@@ -20,7 +20,8 @@ var targets: [Target] = [
         name: "SwiftCurses",
         dependencies: [
             "C_ncurses",
-            "C_ncursesBinds"
+            "C_ncursesBinds",
+            .product(name: "SignalHandler", package: "signalhandler")
         ],
         swiftSettings: []),
     .executableTarget(
@@ -60,50 +61,9 @@ targets
   .append("C_ncursesw")
 #endif
 
-//#if canImport(FoundationNetworking)
-//targets = [
-
-
-//]
-//#else
-//targets = [
-//    .systemLibrary(
-//        name: "C_ncurses",
-//        providers: [
-//            .brew(["ncurses"]),
-//            .apt(["libncurses5-dev", "libncursesw5-dev"]),
-//            .yum(["ncurses-devel"])
-//        ]),
-
-//    .target(
-//        name: "SwiftCurses",
-//        dependencies: [
-//            "C_ncurses",
-//            "C_ncursesBinds"
-//        ],
-//        swiftSettings: [
-//          .define("SWIFTCURSES_OPAQUE")
-//        ]),
-
-//    .executableTarget(
-//        name: "Examples",
-//        dependencies: ["SwiftCurses"],
-//        exclude: ["README.md"],
-//        swiftSettings: [.unsafeFlags([
-//            "-Xfrontend",
-//            "-warn-long-function-bodies=100",
-//            "-Xfrontend",
-//            "-warn-long-expression-type-checking=100"
-//        ])]),
-
-//    .testTarget(
-//        name: "ncursesTests",
-//        dependencies: ["SwiftCurses"]),
-//]
-//#endif
-
 let package = Package(
     name: "SwiftCurses",
+    platforms: [.macOS(.v10_15)],
     products: [
         .library(
             name: "SwiftCurses",
@@ -112,5 +72,7 @@ let package = Package(
             name: "Examples",
             targets: ["Examples"])
     ],
-    dependencies: [],
+    dependencies: [
+      .package(url: "https://github.com/Genaro-Chris/SignalHandler.git", branch: "main")
+    ],
     targets: targets)

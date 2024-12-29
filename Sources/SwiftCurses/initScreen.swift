@@ -11,6 +11,10 @@ import Musl
 import ncursesw
 #endif
 
+#if !os(Windows)
+import SignalHandler
+#endif
+
 /// Start a new curses mode terminal
 ///
 /// - Parameters:
@@ -26,6 +30,16 @@ public func initScreen(
     guard let _scr = initscr() else { // start curses mode
         throw CursesError(.cannotCreateWindow)
     }
+    // Assure cleanup on interrupt
+    #if !os(Windows)
+    let exitHandler = SignalHandler(signals: .SIGINT) { _ in
+      endwin()
+      exit(0)
+    }
+    Task {
+      await exitHandler.start()
+    }
+    #endif
     defer {
         endwin() // end curses mode
     }
@@ -55,6 +69,14 @@ public func initScreenAsync(
     guard let _scr = initscr() else { // start curses mode
         throw CursesError(.cannotCreateWindow)
     }
+    // Assure cleanup on interrupt
+    #if !os(Windows)
+    let exitHandler = SignalHandler(signals: .SIGINT) { _ in
+      endwin()
+      exit(0)
+    }
+    await exitHandler.start()
+    #endif
     defer {
         endwin() // end curses mode
     }
