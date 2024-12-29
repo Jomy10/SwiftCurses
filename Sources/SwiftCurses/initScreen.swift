@@ -75,7 +75,9 @@ public func initScreenAsync(
       endwin()
       exit(0)
     }
-    await exitHandler.start()
+    Task {
+      await exitHandler.start()
+    }
     #endif
     defer {
         endwin() // end curses mode
