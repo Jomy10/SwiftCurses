@@ -1,18 +1,14 @@
 import ncurses
-
 #if os(Linux)
-#if canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#else
-#error("No standard C library for Linux target found")
-#endif
 import ncursesw
 #endif
 
-#if !os(Windows)
-import SignalHandler
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#elseif canImport(Musl)
+import Musl
 #endif
 
 /// Start a new curses mode terminal
@@ -32,13 +28,10 @@ public func initScreen(
     }
     // Assure cleanup on interrupt
     #if !os(Windows)
-    let exitHandler = SignalHandler(signals: .SIGINT) { _ in
-      endwin()
-      exit(0)
-    }
-    Task {
-      await exitHandler.start()
-    }
+    signal(SIGINT, { _ in
+        endwin()
+        exit(0)
+    })
     #endif
     defer {
         endwin() // end curses mode
@@ -50,6 +43,10 @@ public func initScreen(
     var scr = Window(_scr)
     try body(&scr)
 }
+
+#if !os(Windows)
+fileprivate nonisolated(unsafe) var originalTermios = termios()
+#endif
 
 /// Start a new curses mode terminal
 ///
@@ -64,20 +61,26 @@ public func initScreenAsync(
     windowSettings: [WindowSetting] = WindowSetting.defaultSettings,
     _ body: @Sendable (inout Window) async throws -> ()
 ) async throws {
-    setlocale(LC_ALL, "") // support for wide chars
+    setlocale(LC_ALL, "") // support fr wide chars
 
+    var scr: Window? = nil
+   	#if !os(Windows)
+	if (tcgetattr(STDIN_FILENO, &originalTermios) == -1) {
+		// err
+	}
+   	#endif
     guard let _scr = initscr() else { // start curses mode
         throw CursesError(.cannotCreateWindow)
     }
     // Assure cleanup on interrupt
     #if !os(Windows)
-    let exitHandler = SignalHandler(signals: .SIGINT) { _ in
-      endwin()
-      exit(0)
-    }
-    Task {
-      await exitHandler.start()
-    }
+    signal(SIGINT, { _ in
+        endwin()
+        if (tcsetattr(STDIN_FILENO, 0, &originalTermios) == -1) {
+           	//print("error restoring termios")
+        }
+        exit(0)
+    })
     #endif
     defer {
         endwin() // end curses mode
@@ -86,8 +89,8 @@ public func initScreenAsync(
     try settings.forEach { try $0.apply() }
     windowSettings.forEach { $0.apply(_scr) }
 
-    var scr = Window(_scr)
-    try await body(&scr)
+    scr = Window(_scr)
+    try await body(&scr!)
 }
 
 // https://invisible-island.net/ncurses/man/curs_scr_dump.3x.html //

@@ -79,14 +79,6 @@ Always looking at improving this library, feel free to leave suggestions/pull re
 - https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/otherlib.html
 - fill in the todos
 
-
-## macOS version compatibility
-
-| macOS version | latest compatible library version |
-|---------------|-----------------------------------|
-| < 10.15       | <= 1.0.3                          |
-| >= 10.15      | latest                            |
-
 ## License
 
 Since the original is licensed under the MIT license, this library is also

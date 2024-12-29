@@ -21,7 +21,6 @@ var targets: [Target] = [
         dependencies: [
             "C_ncurses",
             "C_ncursesBinds",
-            .product(name: "SignalHandler", package: "signalhandler")
         ],
         swiftSettings: []),
     .executableTarget(
@@ -63,7 +62,6 @@ targets
 
 let package = Package(
     name: "SwiftCurses",
-    platforms: [.macOS(.v10_15)],
     products: [
         .library(
             name: "SwiftCurses",
@@ -72,7 +70,5 @@ let package = Package(
             name: "Examples",
             targets: ["Examples"])
     ],
-    dependencies: [
-      .package(url: "https://github.com/Genaro-Chris/SignalHandler.git", branch: "main")
-    ],
+    dependencies: [],
     targets: targets)

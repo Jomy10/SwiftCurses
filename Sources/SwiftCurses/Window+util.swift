@@ -9,20 +9,20 @@ extension swift_YX {
 }
 
 extension C_ncursesBinds.swift_YX: Swift.Equatable, Swift.Hashable {
-  public static func ==(lhs: Self, rhs: Self) -> Bool {
-    lhs.x == rhs.x && lhs.y == rhs.y
-  }
+	public static func ==(lhs: Self, rhs: Self) -> Bool {
+	 	lhs.x == rhs.x && lhs.y == rhs.y
+	}
 
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(self.x)
-    hasher.combine(self.y)
-  }
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.x)
+		hasher.combine(self.y)
+	}
 }
 
 extension C_ncursesBinds.swift_YX: Swift.CustomStringConvertible {
-  public var description: String {
-    "(row: \(self.row), col: \(self.col))"
-  }
+	public var description: String {
+	    "(row: \(self.row), col: \(self.col))"
+	}
 }
 
 public typealias Coordinate = swift_YX
